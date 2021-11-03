@@ -23,3 +23,25 @@ class TestNewsReleasesPush:
         from hook_tasks.periodic.tasks import push_plurk_new_releases
         push_plurk_new_releases.apply().get()
         execution.assert_called_once()
+
+
+@pytest.mark.usefixtures("db_session")
+def test_check_new_release(mocker: MockerFixture):
+    mocker.patch(
+        "figure_hook.utils.announcement_checksum.SiteChecksum._extract_feature"
+    )
+    mocker.patch(
+        "figure_hook.utils.announcement_checksum.SiteChecksum.is_changed",
+        return_value=True
+    )
+    mocker.patch(
+        "figure_hook.utils.announcement_checksum.SiteChecksum.trigger_crawler",
+        return_value=[1, 2, 3]
+    )
+    mocker.patch(
+        "figure_hook.utils.announcement_checksum.SiteChecksum.update"
+    )
+
+    from hook_tasks.periodic.tasks import check_new_release
+    result = check_new_release.apply().get()
+    assert result
