@@ -9,6 +9,7 @@ license = "MIT"
 python = "^3.9"
 celery = "^5.1.2"
 figure-hook = {git = "https://github.com/FigureHook/figure_hook", branch = "main"}
+click = "^8.0.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
