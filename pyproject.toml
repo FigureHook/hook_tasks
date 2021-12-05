@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hook_tasks"
-version = "0.1.0"
+version = "0.0.1"
 description = ""
 authors = ["Elton Chou <plscd748@gmail.com>"]
 license = "MIT"
@@ -8,7 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.9"
 celery = "^5.1.2"
-figure-hook = {git = "https://github.com/FigureHook/figure_hook", branch = "main"}
+figure-hook = {git = "https://github.com/FigureHook/figure_hook", tag = "v0.0.1"}
 click = "^8.0.3"
 
 [tool.poetry.dev-dependencies]
