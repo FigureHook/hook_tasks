@@ -9,6 +9,8 @@ WORKDIR /workspace
 COPY poetry.lock .
 COPY pyproject.toml .
 COPY hook_tasks hook_tasks/
+COPY _cmd.py .
+COPY celery_start.sh .
 
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi
