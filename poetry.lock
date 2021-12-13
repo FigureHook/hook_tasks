@@ -328,7 +328,7 @@ sgmllib3k = "*"
 
 [[package]]
 name = "figure-hook"
-version = "0.0.1"
+version = "0.0.2"
 description = ""
 category = "main"
 optional = false
@@ -349,8 +349,8 @@ sqlalchemy-mixins = "^1.5"
 [package.source]
 type = "git"
 url = "https://github.com/FigureHook/figure_hook"
-reference = "v0.0.1"
-resolved_reference = "0b6d1d7f0f8c1a4de75f6cebc233d8b8ac0445fe"
+reference = "v0.0.2"
+resolved_reference = "f6cd1a2337c0bc3a885579f09e7f14c3b3afa693"
 
 [[package]]
 name = "figure-parser"
@@ -1090,7 +1090,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "02fb2ced331c884f263076fac3a0feb80ca2bad76036cb2b38a137e430d738eb"
+content-hash = "333e7b33104278ae2de121ff72d997e72c136c41e9a92aed8327010d245cdf5c"
 
 [metadata.files]
 aiohttp = [
