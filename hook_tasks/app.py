@@ -28,7 +28,7 @@ app.conf.beat_schedule = {
     },
     "check_new_release": {
         'task': 'hook_tasks.periodic.tasks.check_new_release',
-        'schedule': crontab(minute='2, 12, 22 ,32, 42, 52, */5')
+        'schedule': crontab(minute='0, 2, 12, 22 ,32, 42, 52')
     }
 }
 
