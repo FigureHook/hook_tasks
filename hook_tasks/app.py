@@ -20,7 +20,7 @@ app.autodiscover_tasks(
 app.conf.beat_schedule = {
     "push_discord_new_releases": {
         'task': 'hook_tasks.periodic.tasks.push_discord_new_releases',
-        'schedule': crontab(minute='*/10')
+        'schedule': crontab(minute='*/3')
     },
     "push_plurk_new_releases": {
         'task': 'hook_tasks.periodic.tasks.push_plurk_new_releases',
@@ -28,7 +28,7 @@ app.conf.beat_schedule = {
     },
     "check_new_release": {
         'task': 'hook_tasks.periodic.tasks.check_new_release',
-        'schedule': crontab(minute='2, 12, 22 ,32, 42, 52')
+        'schedule': crontab(minute='2, 12, 22 ,32, 42, 52, */5')
     }
 }
 
