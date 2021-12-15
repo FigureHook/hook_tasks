@@ -9,10 +9,11 @@ WORKDIR /workspace
 COPY poetry.lock .
 COPY pyproject.toml .
 COPY hook_tasks hook_tasks/
-COPY _cmd.py .
-COPY celery_start.sh .
+COPY docker_entrypoint.sh .
 
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-interaction --no-ansi && \
+    chmod +x docker_entrypoint.sh
 
-CMD /bin/bash celery_start.sh
+ENTRYPOINT [ "./docker_entrypoint.sh" ]
+CMD [ "start" ]
