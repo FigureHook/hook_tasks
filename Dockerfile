@@ -13,7 +13,7 @@ COPY docker_entrypoint.sh .
 
 RUN poetry config virtualenvs.create false && \
     poetry install --no-interaction --no-ansi && \
-    chmod +x docker_entrypoint.sh
+    chmod +x docker-entrypoint.sh
 
-ENTRYPOINT [ "./docker_entrypoint.sh" ]
+ENTRYPOINT [ "./docker-entrypoint.sh" ]
 CMD [ "start" ]
