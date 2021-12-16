@@ -2,16 +2,35 @@
 
 arg1=$1
 
-if [ "$arg1" == "" ]; then
+if [ -z $arg1 ]; then
     exit 1
 fi
 
 
 check_scrapy () {
-    echo "Building connection with scrapy at '$SCRAPYD_URL'"
-    if ! curl -s $SCRAPYD_URL; then
-        echo "Can't get connection with scrapyd."
+    local scrapyd_exist=false
+    local max_retry=10
+    local interval=1s
+    local count=0
+
+    echo "Building connection with scrapy at '$SCRAPYD_URL'..."
+    while [[ ($scrapyd_exist == false) && ($count -lt $max_retry) ]]; do
+        ((count++))
+
+        if ! curl -fs --connect-timeout 2 --url $SCRAPYD_URL; then
+            echo "Can't get connection with scrapyd. Retry after $interval. ($count/$max_retry)"
+        else
+            scrapyd_exist=true
+        fi
+
+        sleep $interval
+    done
+
+    if [ $scrapyd_exist == false ]; then
+        echo "Failed to build connection with scrapyd."
         exit 1
+    else
+        echo "Successfully build connection with scrapyd."
     fi
 }
 
@@ -25,8 +44,6 @@ check_db () {
 
 
 if [ $arg1 == "start" ]; then
-    check_scrapy
-    check_db
-    hooktasks run
+    check_db && check_scrapy && hooktasks run
 fi
 
