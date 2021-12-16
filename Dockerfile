@@ -9,11 +9,11 @@ WORKDIR /workspace
 COPY poetry.lock .
 COPY pyproject.toml .
 COPY hook_tasks hook_tasks/
-COPY docker_entrypoint.sh .
+COPY docker-entrypoint.sh .
 
 RUN poetry config virtualenvs.create false && \
     poetry install --no-interaction --no-ansi && \
-    chmod +x docker_entrypoint.sh
+    chmod +x docker-entrypoint.sh
 
-ENTRYPOINT [ "./docker_entrypoint.sh" ]
+ENTRYPOINT [ "./docker-entrypoint.sh" ]
 CMD [ "start" ]
