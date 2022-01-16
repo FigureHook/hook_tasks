@@ -8,7 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.9"
 celery = "^5.1.2"
-figure-hook = {git = "https://github.com/FigureHook/figure_hook", tag = "v0.0.3"}
+figure-hook = {git = "https://github.com/FigureHook/figure_hook", tag = "v0.0.4"}
 click = "^8.0.3"
 
 [tool.poetry.dev-dependencies]
