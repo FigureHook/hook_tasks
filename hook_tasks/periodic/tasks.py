@@ -1,6 +1,7 @@
 import os
 from typing import Type
 
+from celery.utils.log import get_task_logger
 from figure_hook.database import pgsql_session
 from figure_hook.Tasks.periodic import (DiscordNewReleasePush,
                                         PlurkNewReleasePush)
@@ -8,10 +9,11 @@ from figure_hook.utils.announcement_checksum import (AlterChecksum,
                                                      GSCChecksum,
                                                      NativeChecksum,
                                                      SiteChecksum)
-
 from figure_hook.utils.scrapyd_api import ScrapydUtil
 
 from ..app import app
+
+logger = get_task_logger(__name__)
 
 
 @app.task
@@ -27,7 +29,7 @@ def push_discord_new_releases():
 def push_plurk_new_releases():
     with pgsql_session() as session:
         news_push = PlurkNewReleasePush(session=session)
-        result = news_push.execute()
+        result = news_push.execute(logger=logger)
 
     return result
 
