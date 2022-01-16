@@ -10,6 +10,7 @@ from figure_hook.utils.announcement_checksum import (AlterChecksum,
                                                      NativeChecksum,
                                                      SiteChecksum)
 from figure_hook.utils.scrapyd_api import ScrapydUtil
+from requests.exceptions import HTTPError
 
 from ..app import app
 
@@ -47,9 +48,18 @@ def check_new_release():
             os.getenv("SCRAPYD_URL", "http://127.0.0.1:6800"), "product_crawler"
         )
         for site_checksum in site_checksums:
-            checksum = site_checksum(scrapyd_util=scrapy_util)
-            if checksum.is_changed:
-                spider_jobs = checksum.trigger_crawler()
-                scheduled_jobs.extend(spider_jobs)
-                checksum.update()
+            try:
+                checksum = site_checksum(scrapyd_util=scrapy_util)
+                if checksum.is_changed:
+                    spider_jobs = checksum.trigger_crawler()
+                    checksum.__spider__
+                    scheduled_jobs.append({
+                        checksum.__spider__: spider_jobs
+                    })
+                    checksum.update()
+            except HTTPError as err:
+                scheduled_jobs.append({
+                    site_checksum.__spider__: err
+                })
+
     return scheduled_jobs
