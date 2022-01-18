@@ -10,7 +10,7 @@ fi
 check_scrapy () {
     local scrapyd_exist=false
     local max_retry=10
-    local interval=1s
+    local interval=5s
     local count=0
 
     echo "Building connection with scrapy at '$SCRAPYD_URL'..."
