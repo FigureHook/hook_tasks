@@ -28,18 +28,18 @@ class TestNewsReleasesPush:
 @pytest.mark.usefixtures("db_session")
 def test_check_new_release(mocker: MockerFixture):
     mocker.patch(
-        "figure_hook.utils.announcement_checksum.SiteChecksum._extract_feature"
+        "figure_hook.SourceChecksum.abcs.ProductAnnouncementChecksum._extract_feature"
     )
     mocker.patch(
-        "figure_hook.utils.announcement_checksum.SiteChecksum.is_changed",
+        "figure_hook.SourceChecksum.abcs.ProductAnnouncementChecksum.is_changed",
         return_value=True
     )
     mocker.patch(
-        "figure_hook.utils.announcement_checksum.SiteChecksum.trigger_crawler",
+        "figure_hook.SourceChecksum.abcs.ProductAnnouncementChecksum.trigger_crawler",
         return_value=[1, 2, 3]
     )
     mocker.patch(
-        "figure_hook.utils.announcement_checksum.SiteChecksum.update"
+        "figure_hook.SourceChecksum.abcs.ProductAnnouncementChecksum.update"
     )
 
     from hook_tasks.periodic.tasks import check_new_release

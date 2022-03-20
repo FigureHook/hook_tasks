@@ -5,10 +5,10 @@ from celery.utils.log import get_task_logger
 from figure_hook.database import pgsql_session
 from figure_hook.Tasks.periodic import (DiscordNewReleasePush,
                                         PlurkNewReleasePush)
-from figure_hook.utils.announcement_checksum import (AlterChecksum,
-                                                     GSCChecksum,
-                                                     NativeChecksum,
-                                                     SiteChecksum)
+from figure_hook.SourceChecksum.product_announcement_checksum import (AlterProductAnnouncementChecksum,
+                                                                      GSCProductAnnouncementChecksum,
+                                                                      NativeProductAnnouncementChecksum)
+from figure_hook.SourceChecksum.abcs import ProductAnnouncementChecksum
 from figure_hook.utils.scrapyd_api import ScrapydUtil
 from requests.exceptions import HTTPError
 
@@ -38,10 +38,10 @@ def push_plurk_new_releases():
 @app.task
 def check_new_release():
     scheduled_jobs = []
-    site_checksums: list[Type[SiteChecksum]] = [
-        AlterChecksum,
-        GSCChecksum,
-        NativeChecksum
+    site_checksums: list[Type[ProductAnnouncementChecksum]] = [
+        AlterProductAnnouncementChecksum,
+        GSCProductAnnouncementChecksum,
+        NativeProductAnnouncementChecksum
     ]
     with pgsql_session():
         scrapy_util = ScrapydUtil(
