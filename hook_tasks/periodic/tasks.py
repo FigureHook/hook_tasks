@@ -5,11 +5,13 @@ from celery.utils.log import get_task_logger
 from figure_hook.database import pgsql_session
 from figure_hook.Tasks.periodic import (DiscordNewReleasePush,
                                         PlurkNewReleasePush)
-from figure_hook.SourceChecksum.product_announcement_checksum import (AlterProductAnnouncementChecksum,
-                                                                      GSCProductAnnouncementChecksum,
-                                                                      NativeProductAnnouncementChecksum)
-from figure_hook.SourceChecksum.abcs import ProductAnnouncementChecksum
 from figure_hook.utils.scrapyd_api import ScrapydUtil
+from hook_tasks.SourceChecksum.abcs import (DelayChecksum,
+                                            ProductAnnouncementChecksum)
+from hook_tasks.SourceChecksum.delay_checksum import GSCDelayChecksum
+from hook_tasks.SourceChecksum.product_announcement_checksum import (
+    AlterProductAnnouncementChecksum, GSCProductAnnouncementChecksum,
+    NativeProductAnnouncementChecksum)
 from requests.exceptions import HTTPError
 
 from ..app import app
@@ -52,7 +54,34 @@ def check_new_release():
                 checksum = site_checksum(scrapyd_util=scrapy_util)
                 if checksum.is_changed:
                     spider_jobs = checksum.trigger_crawler()
-                    checksum.__spider__
+                    scheduled_jobs.append({
+                        checksum.__spider__: spider_jobs
+                    })
+                    checksum.update()
+            except HTTPError as err:
+                scheduled_jobs.append({
+                    site_checksum.__spider__: err
+                })
+
+    return scheduled_jobs
+
+
+@app.task
+def check_delay():
+    scheduled_jobs = []
+    delay_checksums: list[Type[DelayChecksum]] = [
+        GSCDelayChecksum
+    ]
+
+    with pgsql_session():
+        scrapy_util = ScrapydUtil(
+            os.getenv("SCRAPYD_URL", "http://127.0.0.1:6800"), "product_crawler"
+        )
+        for site_checksum in delay_checksums:
+            try:
+                checksum = site_checksum(scrapyd_util=scrapy_util)
+                if checksum.is_changed:
+                    spider_jobs = checksum.trigger_crawler()
                     scheduled_jobs.append({
                         checksum.__spider__: spider_jobs
                     })
