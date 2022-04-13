@@ -19,35 +19,20 @@ def check():
     pass
 
 
-@main.command('initdb')
-def init_db():
-    "initialize database."
-    from figure_hook.Models.base import Model
-    pgsql = PostgreSQLDB()
-    Model.metadata.create_all(pgsql.engine)
-
-
-@main.command('dropdb')
-def drop_db():
-    "drop database."
-    from figure_hook.Models.base import Model
-    pgsql = PostgreSQLDB()
-    Model.metadata.drop_all(pgsql.engine)
-
-@ check.command('db')
+@check.command('db')
 def check_db():
-    db=PostgreSQLDB()
-    db_exist=False
-    try_count=0
-    max_retry_times=10
-    interval=1
+    db = PostgreSQLDB()
+    db_exist = False
+    try_count = 0
+    max_retry_times = 10
+    interval = 1
 
     click.echo("Building database connection...")
     while not db_exist and try_count < max_retry_times:
         try:
-            conn=db.engine.connect()
+            conn = db.engine.connect()
             conn.close()
-            db_exist=True
+            db_exist = True
             click.echo("Successfully build connection with database.")
         except KeyboardInterrupt:
             sys.exit(0)
@@ -59,11 +44,11 @@ def check_db():
         finally:
             try_count += 1
 
-    exit_code=0 if db_exist else 1
+    exit_code = 0 if db_exist else 1
     sys.exit(exit_code)
 
 
-@ main.command()
+@main.command()
 def run():
     """run development server."""
     from .app import app
