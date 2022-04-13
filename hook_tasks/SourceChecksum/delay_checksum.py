@@ -14,7 +14,7 @@ __all__ = ["GSCDelayChecksum"]
 
 class GSCDelayChecksum(DelayChecksum):
     __source_site__ = SourceSite.GSC_DELAY
-    __spider__ = 'gsc_delay_post'
+    __spider__ = 'gsc_new_delay_post'
 
     @property
     def spider_configs(self) -> List[SpiderConfig]:
