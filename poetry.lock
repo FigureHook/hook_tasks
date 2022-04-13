@@ -351,7 +351,7 @@ sqlalchemy-mixins = "^1.5"
 type = "git"
 url = "https://github.com/FigureHook/figure_hook"
 reference = "v0.1.1"
-resolved_reference = "80ff0ec544013f5f28a1f723bb4c9d55ac289966"
+resolved_reference = "f5013dd22c81930a5fd5728754958d07886dea50"
 
 [[package]]
 name = "figure-parser"
