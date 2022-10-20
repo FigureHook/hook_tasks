@@ -8,16 +8,27 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.9"
 celery = "^5.1.2"
-figure-hook = {git = "https://github.com/FigureHook/figure_hook", tag = "v0.1.1"}
 click = "^8.0.3"
+figure-parser = { git = "https://github.com/FigureHook/figure_parser.git", rev = "main" }
+figure-hook-client = { git = "https://github.com/FigureHook/hook-api-client.git", subdirectory = "python/figure-hook-client" }
+"discord.py" = "^2.0.1"
+plurk-oauth = "^0.9.2"
+scrapyd-client = "^1.2.2"
+Babel = "^2.10.3"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+pydantic-factories = "^1.12.0"
 pytest = "^6.2.5"
 pytest-mock = "^3.6.1"
 Faker = "^9.8.0"
 
 [tool.poetry.scripts]
 hooktasks = "hook_tasks.cli:main"
+
+[tool.pytest.ini_options]
+addopts = "-ra -q --ignore=temp/"
+testpaths = ["tests"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1,24 +1,8 @@
-import os
-
-import pytest
-from figure_hook.Models.base import Model
-from sqlalchemy.orm import sessionmaker
-
-os.environ['POSTGRES_DATABASE'] = "figure_testing"
+from hook_tasks.domains.sns_post.entitles import ReleaseFeed
+from pydantic_factories import ModelFactory
+from pydantic_factories.plugins.pytest_plugin import register_fixture
 
 
-@pytest.fixture()
-def db_session():
-    from figure_hook.database import PostgreSQLDB
-
-    pgsql = PostgreSQLDB()
-    Model.metadata.drop_all(bind=pgsql.engine)
-
-    Session = sessionmaker(pgsql.engine)
-    with Session() as session:
-        Model.set_session(session)
-        Model.metadata.create_all(bind=pgsql.engine)
-        yield session
-
-    Model.set_session(None)  # type: ignore
-    Model.metadata.drop_all(bind=pgsql.engine)
+@register_fixture
+class ReleaseFeedFactory(ModelFactory):
+    __model__ = ReleaseFeed
