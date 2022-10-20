@@ -28,7 +28,7 @@ def create_new_release_embed(release_feed: ReleaseFeed) -> ReleaseEmbed:
     if release_feed.size:
         embed.add_field(name="size", value=f"{release_feed.size} mm", inline=True)
 
-    # if scale:
+    # if release_feed.scale:
     #     embed.add_field(
     #         name="scale", value=f"1/{scale}", inline=True
     #     )

@@ -36,4 +36,4 @@ celerybeat-schedule
 
 # coverage
 **/htmlcov/
-*.coverage
+*.coverage*
