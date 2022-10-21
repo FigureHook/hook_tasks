@@ -7,7 +7,7 @@ from hook_tasks.domains.sns_post.discord.usecases.create_embed import (
     create_new_release_embed, create_welcome_embed)
 from hook_tasks.domains.sns_post.discord.usecases.localize_embed import \
     localize_release_embed_with_locale
-from hook_tasks.domains.sns_post.entitles import ReleaseFeed
+from hook_tasks.domains.sns_post.entities import ReleaseFeed
 
 
 def test_create_welcom_embed():
