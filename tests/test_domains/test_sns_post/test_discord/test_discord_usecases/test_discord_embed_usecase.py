@@ -1,12 +1,14 @@
 import re
 
 from discord import Embed
-from hook_tasks.domains.sns_post.discord.entities import (EmbedLocale,
-                                                          ReleaseEmbed)
+from hook_tasks.domains.sns_post.discord.entities import EmbedLocale, ReleaseEmbed
 from hook_tasks.domains.sns_post.discord.usecases.create_embed import (
-    create_new_release_embed, create_welcome_embed)
-from hook_tasks.domains.sns_post.discord.usecases.localize_embed import \
-    localize_release_embed_with_locale
+    create_new_release_embed,
+    create_welcome_embed,
+)
+from hook_tasks.domains.sns_post.discord.usecases.localize_embed import (
+    localize_release_embed_to_embed_with_locale,
+)
 from hook_tasks.domains.sns_post.entities import ReleaseFeed
 
 
@@ -31,7 +33,7 @@ def test_locaolize_release_embed(release_feed_factory):
     new_release_embed = create_new_release_embed(release_feed=release_feed)
 
     for locale in EmbedLocale:
-        localized_embed = localize_release_embed_with_locale(
+        localized_embed = localize_release_embed_to_embed_with_locale(
             release_embed=new_release_embed, locale=locale
         )
-        assert not localized_embed.is_raw
+        assert isinstance(localized_embed, Embed)

@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Any
 
 from babel.dates import format_date
+from discord import Embed
 
 from ..entities import EmbedLocale, ReleaseEmbed
 
@@ -54,9 +55,9 @@ locale_mapping = {
 }
 
 
-def localize_release_embed_with_locale(
+def localize_release_embed_to_embed_with_locale(
     release_embed: ReleaseEmbed, locale: EmbedLocale
-) -> ReleaseEmbed:
+) -> Embed:
     embed = release_embed.copy()
     embed_locale = embed_templates[locale]
 
@@ -74,8 +75,7 @@ def localize_release_embed_with_locale(
                 release_date_filed=field, locale=locale
             )
 
-    embed.confirm_localized()
-    return embed
+    return Embed.from_dict(embed.to_dict())
 
 
 def _localize_release_date_field_with_locale(
