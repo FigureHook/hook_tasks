@@ -47,7 +47,8 @@ class ReleaseEmbed(Embed):
         return self
 
     def set_size(self, *, size: Optional[int]) -> Self:
-        self.add_field(name="size", value=f"{size} mm", inline=True)
+        if size:
+            self.add_field(name="size", value=f"{size} mm", inline=True)
         return self
 
     def set_scale(self, *, scale: Optional[int]) -> Self:
