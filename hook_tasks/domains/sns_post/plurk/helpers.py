@@ -4,7 +4,7 @@ class PlurkFormatHelper:
         return f"{url} ({text})"
 
     @staticmethod
-    def bold(text) -> str:
+    def bold(text: str) -> str:
         return f"**{text}**"
 
     @staticmethod
