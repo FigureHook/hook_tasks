@@ -29,10 +29,10 @@ class ReleaseEmbed(Embed):
     def is_nsfw(self):
         return self._is_nsfw
 
-    def copy(self):
+    def copy(self) -> Self:
         return deepcopy(super().copy())
 
-    def add_field(self, *, name: str, value: Any, inline: bool = True):
+    def add_field(self, *, name: str, value: Any, inline: bool = True) -> Self:
         if not value:
             return self
         return super().add_field(name=name, value=value, inline=inline)

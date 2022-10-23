@@ -47,6 +47,7 @@ exclude_lines = [
     "pass",
     "raise NotImplementedError",
     "pragma: no cover",
+    "if TYPE_CHECKING:"
 ]
 
 

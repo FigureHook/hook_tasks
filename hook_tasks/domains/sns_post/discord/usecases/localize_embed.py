@@ -1,10 +1,12 @@
-from datetime import datetime
-from typing import Any
+from datetime import date, datetime
+from typing import TYPE_CHECKING
 
 from babel.dates import format_date
-from discord import Embed
 
 from ..entities import EmbedLocale, ReleaseEmbed
+
+if TYPE_CHECKING:
+    from discord.embeds import _EmbedFieldProxy
 
 embed_templates = {
     EmbedLocale.EN: {
@@ -55,37 +57,51 @@ locale_mapping = {
 }
 
 
-def localize_release_embed_to_embed_with_locale(
+def localize_release_embed_with_locale(
     release_embed: ReleaseEmbed, locale: EmbedLocale
-) -> Embed:
+) -> ReleaseEmbed:
     embed = release_embed.copy()
     embed_locale = embed_templates[locale]
 
     if embed.author:
-        key = str(embed.author.name)
-        author_name = embed_locale.get(key)
-        embed.set_author(name=author_name, icon_url=embed.author.icon_url)
+        if embed.author.name:
+            author_name = embed_locale.get(embed.author.name)
+            embed.set_author(name=author_name, icon_url=embed.author.icon_url)
 
-    for field in embed._fields:
-        key = field["name"]
-        field["name"] = embed_locale.get(key, key)
-
-        if key == "release_date":
-            _localize_release_date_field_with_locale(
-                release_date_filed=field, locale=locale
+    for field in embed.fields:
+        field_raw_name = field.name
+        field = _localize_field_name_with_locale(
+            field=field, translation_map=embed_locale
+        )
+        if field_raw_name == "release_date":
+            field = _localize_release_date_field_value_with_locale(
+                release_date_field=field, locale=locale
             )
 
-    return Embed.from_dict(embed.to_dict())
+    return embed
 
 
-def _localize_release_date_field_with_locale(
-    release_date_filed: dict[str, Any],
+def _localize_field_name_with_locale(
+    field: "_EmbedFieldProxy", translation_map: dict[str, str]
+) -> "_EmbedFieldProxy":
+    if field.name:
+        field.name = translation_map.get(field.name, field.name)
+    return field
+
+
+def _localize_release_date_field_value_with_locale(
+    release_date_field: "_EmbedFieldProxy",
     locale: EmbedLocale,
-):
+) -> "_EmbedFieldProxy":
+    if release_date_field.value:
+        release_date = datetime.strptime(release_date_field.value, "%Y-%m-%d").date()
+        release_date_field.value = _get_localized_release_date_text(
+            release_date, locale=locale
+        )
+    return release_date_field
+
+
+def _get_localized_release_date_text(release_date: date, locale: EmbedLocale) -> str:
     babel_locale = locale_mapping.get(locale, "en")
     date_format = embed_templates[locale]["date_format"]
-    if release_date_filed["value"]:
-        release_date = datetime.strptime(release_date_filed["value"], "%Y-%m-%d").date()
-        release_date_filed["value"] = str(
-            format_date(release_date, date_format, locale=babel_locale)
-        )
+    return format_date(release_date, date_format, locale=babel_locale)
