@@ -23,6 +23,20 @@ class CelerySettings(BaseSettings):
         url = values.get("rabbit_url")
         return f"pyamqp://{user}:{pw}@{url}/"
 
+    class Config:
+        env_file = ".env"
+
 
 class SpiderSettings(BaseSettings):
     SCRAPY_URL: HttpUrl = Field(..., env="SCRAPY_URL")
+
+    class Config:
+        env_file = ".env"
+
+
+class HookApiSettings(BaseSettings):
+    URL: HttpUrl = Field(..., env="HOOK_API_URL")
+    TOKEN: str = Field(..., env="HOOK_API_TOKEN")
+
+    class Config:
+        env_file = ".env"
