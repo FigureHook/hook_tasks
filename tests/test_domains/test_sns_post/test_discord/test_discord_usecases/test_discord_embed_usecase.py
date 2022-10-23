@@ -1,5 +1,5 @@
 import re
-
+from datetime import date
 from discord import Embed
 from hook_tasks.domains.sns_post.discord.entities import EmbedLocale, ReleaseEmbed
 from hook_tasks.domains.sns_post.discord.usecases.create_embed import (
@@ -28,8 +28,10 @@ def test_create_release_embed(release_feed_factory):
     assert isinstance(new_release_embed, ReleaseEmbed)
 
 
-def test_locaolize_release_embed(release_feed_factory):
-    release_feed: ReleaseFeed = release_feed_factory.build()
+def test_localize_release_embed(release_feed_factory):
+    release_feed: ReleaseFeed = release_feed_factory.build(
+        release_date=date(2022, 2, 2)
+    )
     new_release_embed = create_new_release_embed(release_feed=release_feed)
 
     for locale in EmbedLocale:
