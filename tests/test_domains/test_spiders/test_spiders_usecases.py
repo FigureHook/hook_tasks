@@ -1,14 +1,9 @@
 from hook_tasks.domains.spiders.usecases.scrapy_spider import (
-    get_spiders_from_project,
-    trigger_spider,
-)
+    get_spiders_from_project, trigger_spider)
 from pytest_mock import MockerFixture
 
 
 def test_get_spiders(mocker: MockerFixture):
-    from hook_tasks.config import SpiderSettings
-
-    SpiderSettings.SCRAPY_URL = "http://spider.com"
     mocker.patch(
         "hook_tasks.domains.spiders.usecases.scrapy_spider.get_spiders",
         new=mocker.MagicMock(return_value=["123"]),
@@ -18,9 +13,6 @@ def test_get_spiders(mocker: MockerFixture):
 
 
 def test_trigger_spider(mocker: MockerFixture):
-    from hook_tasks.config import SpiderSettings
-
-    SpiderSettings.SCRAPY_URL = "http://spider.com"
     mocker.patch(
         "hook_tasks.domains.spiders.usecases.scrapy_spider.schedule",
         new=mocker.MagicMock(return_value="123a"),
