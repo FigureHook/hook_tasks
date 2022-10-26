@@ -69,7 +69,7 @@ class SiteSourceChceksum(ABC):
         return cls(checksum=checksum)
 
 
-class GSCProductAnnouncementCheck(SiteSourceChceksum):
+class GscProductAnnouncementCheck(SiteSourceChceksum):
     __source_site__: ClassVar[str] = "gsc_product_announcement"
 
     @staticmethod

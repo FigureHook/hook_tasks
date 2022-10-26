@@ -1,13 +1,13 @@
 from hook_tasks.domains.source_checksum.entities import DTOSourceChecksum
 from hook_tasks.domains.source_checksum.usecases.announcement_check import (
     AlterProductAnnouncementCheck, AmakuniProductAnnouncementCheck,
-    GSCProductAnnouncementCheck, NativeProductAnnouncementCheck)
+    GscProductAnnouncementCheck, NativeProductAnnouncementCheck)
 from pydantic_factories import ModelFactory
 from pydantic_factories.plugins.pytest_plugin import register_fixture
 from pytest_mock import MockerFixture
 
 all_checks = (
-    GSCProductAnnouncementCheck,
+    GscProductAnnouncementCheck,
     AlterProductAnnouncementCheck,
     NativeProductAnnouncementCheck,
     AmakuniProductAnnouncementCheck,
