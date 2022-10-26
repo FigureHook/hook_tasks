@@ -32,7 +32,7 @@ class ProductSpiderConfig(SpiderConfig):
 
 
 @dataclass
-class GSCProductSpiderConfig(ProductSpiderConfig):
+class GscProductSpiderConfig(ProductSpiderConfig):
     begin_year: Optional[int] = None
     end_year: Optional[int] = None
     lang: Optional[Union[GSCLang, str]] = GSCLang.JAPANESE
