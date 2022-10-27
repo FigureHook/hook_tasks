@@ -6,9 +6,14 @@ from hook_tasks.configs import SpiderSettings
 from hook_tasks.helpers import JapanDatetimeHelper
 from scrapyd_client.lib import get_spiders, schedule
 
-from ..spider_config import (AlterProductSpiderConfig, EmptyConfig,
-                             GscProductSpiderConfig, NativeProductSpiderConfig,
-                             SpiderConfig)
+from ..spider_config import (
+    AlterProductSpiderConfig,
+    EmptyConfig,
+    GscProductSpiderConfig,
+    NativeProductSpiderConfig,
+    AmakuniProductSpiderConfig,
+    SpiderConfig,
+)
 
 __all__ = ("get_spiders_from_project", "trigger_spider")
 
@@ -97,4 +102,13 @@ class NativeProductAnnouncementSpiderUseCase(ProductAnnouncementSpiderUseCase):
         NativeProductSpiderConfig(
             end_page=1, category=NativeCategory.CREATORS, is_announcement_spider=True
         ),
+    ]
+
+
+class AmakuniProductAnnouncementSpiderUseCase(ProductAnnouncementSpiderUseCase):
+    spider: ClassVar[str] = "amakuni_product"
+    spider_configs: ClassVar[List[SpiderConfig]] = [
+        AmakuniProductSpiderConfig(
+            is_announcement_spider=True, begin_year=JapanDatetimeHelper.today().year
+        )
     ]

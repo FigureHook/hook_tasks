@@ -11,6 +11,7 @@ from hook_tasks.domains.source_checksum.usecases.announcement_check import (
 )
 from hook_tasks.domains.spiders.usecases.scrapy_spider import (
     AlterProductAnnouncementSpiderUseCase,
+    AmakuniProductAnnouncementSpiderUseCase,
     GscProductAnnouncementSpiderUseCase,
     NativeProductAnnouncementSpiderUseCase,
     ProductAnnouncementSpiderUseCase,
@@ -26,6 +27,7 @@ all_product_announcement_checks: Dict[
     AlterProductAnnouncementCheck: AlterProductAnnouncementSpiderUseCase,
     GscProductAnnouncementCheck: GscProductAnnouncementSpiderUseCase,
     NativeProductAnnouncementCheck: NativeProductAnnouncementSpiderUseCase,
+    AmakuniProductAnnouncementCheck: AmakuniProductAnnouncementSpiderUseCase,
 }
 
 

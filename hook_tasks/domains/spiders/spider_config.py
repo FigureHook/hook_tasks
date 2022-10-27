@@ -2,8 +2,7 @@ from abc import ABC
 from dataclasses import asdict, dataclass
 from typing import Optional, Union
 
-from figure_parser.enums import (AlterCategory, GSCCategory, GSCLang,
-                                 NativeCategory)
+from figure_parser.enums import AlterCategory, GSCCategory, GSCLang, NativeCategory
 
 
 @dataclass
@@ -40,6 +39,12 @@ class AlterProductSpiderConfig(ProductSpiderConfig):
 
 @dataclass
 class NativeProductSpiderConfig(ProductSpiderConfig):
-    begin_page: Optional[int] = None
+    begin_page: int = 1
     end_page: Optional[int] = None
     category: Optional[Union[NativeCategory, str]] = NativeCategory.CHARACTERS
+
+
+@dataclass
+class AmakuniProductSpiderConfig(ProductSpiderConfig):
+    begin_year: int = 2012
+    end_year: Optional[int] = None
