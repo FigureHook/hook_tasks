@@ -3,23 +3,15 @@ from datetime import datetime
 from figure_hook_client.api.source_checksum import (
     create_source_checksum_api_v1_source_checksums_post,
     get_source_checksums_api_v1_source_checksums_get,
-    patch_source_checksum_api_v1_source_checksums_source_checksum_id_patch,
-)
-from figure_hook_client.client import AuthenticatedClient
-from figure_hook_client.models.source_checksum_create import SourceChecksumCreate
+    patch_source_checksum_api_v1_source_checksums_source_checksum_id_patch)
+from figure_hook_client.models.source_checksum_create import \
+    SourceChecksumCreate
 from figure_hook_client.models.source_checksum_in_db import SourceChecksumInDB
-from figure_hook_client.models.source_checksum_update import SourceChecksumUpdate
-from hook_tasks.configs import HookApiSettings
+from figure_hook_client.models.source_checksum_update import \
+    SourceChecksumUpdate
+from hook_tasks.api_clients import hook_api_client
 
 from ..entities import DTOSourceChecksum
-
-api_settings = HookApiSettings()  # type: ignore
-api_client = AuthenticatedClient(
-    base_url=api_settings.URL,
-    token=api_settings.TOKEN,
-    prefix="",
-    auth_header_name="x-api-token",
-)  # type: ignore
 
 
 class ChecksumRepository:
@@ -31,7 +23,7 @@ class ChecksumRepository:
             checked_at=datetime.now(),
         )
         created_checksum = create_source_checksum_api_v1_source_checksums_post.sync(
-            client=api_client, json_body=checksum_create
+            client=hook_api_client, json_body=checksum_create
         )
 
         if isinstance(created_checksum, SourceChecksumInDB):
@@ -44,7 +36,7 @@ class ChecksumRepository:
     @staticmethod
     def get_checksum_by_source(source_name: str) -> "DTOSourceChecksum":
         fetched_checksums = get_source_checksums_api_v1_source_checksums_get.sync(
-            source=source_name, client=api_client, limit=1
+            source=source_name, client=hook_api_client, limit=1
         )
 
         if isinstance(fetched_checksums, list):
@@ -69,7 +61,7 @@ class ChecksumRepository:
         updated_checksum = (
             patch_source_checksum_api_v1_source_checksums_source_checksum_id_patch.sync(
                 source_checksum_id=source_checksum.id,
-                client=api_client,
+                client=hook_api_client,
                 json_body=checksum_update,
             )
         )
