@@ -3,13 +3,12 @@ from datetime import datetime
 from figure_hook_client.api.source_checksum import (
     create_source_checksum_api_v1_source_checksums_post,
     get_source_checksums_api_v1_source_checksums_get,
-    patch_source_checksum_api_v1_source_checksums_source_checksum_id_patch)
+    patch_source_checksum_api_v1_source_checksums_source_checksum_id_patch,
+)
 from figure_hook_client.client import AuthenticatedClient
-from figure_hook_client.models.source_checksum_create import \
-    SourceChecksumCreate
+from figure_hook_client.models.source_checksum_create import SourceChecksumCreate
 from figure_hook_client.models.source_checksum_in_db import SourceChecksumInDB
-from figure_hook_client.models.source_checksum_update import \
-    SourceChecksumUpdate
+from figure_hook_client.models.source_checksum_update import SourceChecksumUpdate
 from hook_tasks.configs import HookApiSettings
 
 from ..entities import DTOSourceChecksum
@@ -53,11 +52,9 @@ class ChecksumRepository:
                 return DTOSourceChecksum(
                     id=fetched_checksums[0].id,
                     value=fetched_checksums[0].checksum,
-                    source_name=source_name
+                    source_name=source_name,
                 )
-            return DTOSourceChecksum(
-                source_name=source_name
-            )
+            return DTOSourceChecksum(source_name=source_name)
 
         raise NotImplementedError
 

@@ -3,8 +3,7 @@ from typing import Optional
 
 from babel.dates import format_date
 from hook_tasks.domains.sns_post.entities import ReleaseFeed
-from hook_tasks.domains.sns_post.plurk.entities import (DOPlurkModel,
-                                                        PlurkConfig)
+from hook_tasks.domains.sns_post.plurk.entities import DOPlurkModel, PlurkConfig
 
 from ..helpers import PlurkFormatHelper
 

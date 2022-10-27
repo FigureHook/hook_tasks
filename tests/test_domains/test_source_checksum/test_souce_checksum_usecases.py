@@ -1,7 +1,10 @@
 from hook_tasks.domains.source_checksum.entities import DTOSourceChecksum
 from hook_tasks.domains.source_checksum.usecases.announcement_check import (
-    AlterProductAnnouncementCheck, AmakuniProductAnnouncementCheck,
-    GscProductAnnouncementCheck, NativeProductAnnouncementCheck)
+    AlterProductAnnouncementCheck,
+    AmakuniProductAnnouncementCheck,
+    GscProductAnnouncementCheck,
+    NativeProductAnnouncementCheck,
+)
 from pydantic_factories import ModelFactory
 from pydantic_factories.plugins.pytest_plugin import register_fixture
 from pytest_mock import MockerFixture
@@ -13,9 +16,11 @@ all_checks = (
     AmakuniProductAnnouncementCheck,
 )
 
+
 @register_fixture
 class DtoSourceChecksumFactory(ModelFactory):
     """DTOSourceChecksum factory"""
+
     __model__ = DTOSourceChecksum
 
 
@@ -38,6 +43,7 @@ def test_check_checksum(mocker: MockerFixture, dto_source_checksum_factory):
             "hook_tasks.domains.source_checksum.usecases.announcement_check._generate_checksum_value",
             new=mocker.MagicMock(return_value="321"),
         )
+
 
 def test_sync_checksum(mocker: MockerFixture, dto_source_checksum_factory):
     for check in all_checks:

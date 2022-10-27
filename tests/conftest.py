@@ -6,4 +6,5 @@ from pydantic_factories.plugins.pytest_plugin import register_fixture
 @register_fixture
 class ReleaseFeedFactory(ModelFactory):
     """ReleaseFeed factory"""
+
     __model__ = ReleaseFeed
