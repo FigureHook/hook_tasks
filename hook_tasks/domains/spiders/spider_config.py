@@ -5,14 +5,6 @@ from typing import Optional, Union
 from figure_parser.enums import (AlterCategory, GSCCategory, GSCLang,
                                  NativeCategory)
 
-__all__ = (
-    "SpiderConfig",
-    "EmptyConfig",
-    "GSCProductSpiderConfig",
-    "AlterProductSpiderConfig",
-    "NativeProductSpiderConfig",
-)
-
 
 @dataclass
 class SpiderConfig(ABC):
