@@ -85,8 +85,9 @@ def check_new_release_by_site_name(site_name: str) -> List[str]:
 @app.task
 def create_release_ticket_for_purpose(purpose: str) -> str:
     ticket_repo = ReleaseTicketRepository(hook_api_client)
+    last_time = ticket_repo.get_last_ticket_created_time_with_purpose(purpose)
     ticket = ticket_repo.create_release_ticket_by_time_with_purpose(
-        time=datetime.now(), purpose=purpose
+        time=last_time, purpose=purpose
     )
     return ticket.id
 

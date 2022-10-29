@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Optional
 
-from pydantic import AnyUrl, BaseSettings, Field, validator, HttpUrl
+from pydantic import AnyUrl, BaseSettings, Field, HttpUrl, validator
 
 
 class CelerySettings(BaseSettings):
@@ -37,6 +37,16 @@ class SpiderSettings(BaseSettings):
 class HookApiSettings(BaseSettings):
     URL: HttpUrl = Field(..., env="HOOK_API_URL")
     TOKEN: str = Field(..., env="HOOK_API_TOKEN")
+
+    class Config:
+        env_file = ".env"
+
+
+class PlurkApiSettings(BaseSettings):
+    app_key: str = Field(..., env="PLURK_APP_KEY")
+    app_secret: str = Field(..., env="PLURK_APP_SECRET")
+    access_token: str = Field(..., env="PLURK_USER_TOKEN")
+    access_token_secret: str = Field(..., env="PLURK_USER_SECRET")
 
     class Config:
         env_file = ".env"
