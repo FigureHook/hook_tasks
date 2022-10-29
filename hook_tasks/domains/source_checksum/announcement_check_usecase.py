@@ -3,10 +3,11 @@ from hashlib import md5
 from typing import ClassVar
 
 import requests as rq
+from hook_tasks.api_clients import hook_api_client
 from hook_tasks.helpers import JapanDatetimeHelper
 
-from ..entities import DTOSourceChecksum
-from ..repositories.checksum_repository import ChecksumRepository
+from .entities import SourceChecksum
+from .repositories.source_checksum_repository import SourceChecksumRepository
 
 
 def _generate_checksum_value(target: bytes) -> str:
@@ -15,19 +16,24 @@ def _generate_checksum_value(target: bytes) -> str:
     return m.hexdigest()
 
 
+CHECKSUM_INIT_VALUE = "init"
+
+checksum_repo = SourceChecksumRepository(api_client=hook_api_client)
+
+
 class SiteSourceChceksum(ABC):
     __source_site__: ClassVar[str]
 
-    _checksum_dto: DTOSourceChecksum
+    _checksum_dto: SourceChecksum
     _current_checksum_value: str
     _synchronizable: bool
 
-    def __init__(self, checksum: DTOSourceChecksum):
+    def __init__(self, checksum: SourceChecksum):
         if not self.__source_site__:
             raise ValueError("Class variable `__source_site__` should be set.")
 
         self._checksum_dto = checksum
-        self._current_checksum_value = "init"
+        self._current_checksum_value = CHECKSUM_INIT_VALUE
         self._synchronizable = False
 
     def _get_current_checksum_value(self) -> str:
@@ -47,14 +53,7 @@ class SiteSourceChceksum(ABC):
             else self._get_current_checksum_value()
         )
 
-        if self._checksum_dto.id:
-            self._checksum_dto = ChecksumRepository.update_checksum(
-                source_checksum=self._checksum_dto
-            )
-        else:
-            self._checksum_dto = ChecksumRepository.create_checksum(
-                source_checksum=self._checksum_dto
-            )
+        self._checksum_dto = checksum_repo.save(self._checksum_dto)
 
         return self
 
@@ -65,7 +64,11 @@ class SiteSourceChceksum(ABC):
 
     @classmethod
     def create(cls):
-        checksum = ChecksumRepository.get_checksum_by_source(cls.__source_site__)
+        checksum = checksum_repo.get_checksum_by_source(cls.__source_site__)
+        if not checksum:
+            checksum = checksum_repo.create_checksum(
+                source_name=cls.__source_site__, checksum_value=CHECKSUM_INIT_VALUE
+            )
         return cls(checksum=checksum)
 
 

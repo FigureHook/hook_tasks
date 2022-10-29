@@ -3,7 +3,9 @@ from typing import Any, Dict
 from discord import SyncWebhook
 from hook_tasks.api_clients import plurk_api
 from hook_tasks.app import app
-from hook_tasks.domains.sns_post.discord.create_embed import create_welcome_embed
+from hook_tasks.domains.sns_post.discord.create_embed_usecase import (
+    create_welcome_embed,
+)
 
 
 @app.task

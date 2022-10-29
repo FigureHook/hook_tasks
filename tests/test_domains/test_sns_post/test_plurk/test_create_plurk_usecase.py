@@ -1,7 +1,6 @@
-from hook_tasks.domains.sns_post.plurk.entities import DOPlurkModel
-
-from hook_tasks.domains.sns_post.plurk.create_plurk import (
+from hook_tasks.domains.sns_post.plurk.create_plurk_usecase import (
     create_new_release_plurk_by_release_feed,
+    DOPlurkModel,
 )
 
 

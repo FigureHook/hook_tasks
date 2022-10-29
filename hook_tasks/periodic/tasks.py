@@ -7,17 +7,17 @@ from celery import chunks, group
 from celery.utils.log import get_task_logger
 from hook_tasks.api_clients import hook_api_client
 from hook_tasks.app import app
-from hook_tasks.domains.sns_post.plurk.create_plurk import (
+from hook_tasks.domains.sns_post.plurk.create_plurk_usecase import (
     create_new_release_plurk_by_release_feed,
 )
-from hook_tasks.domains.source_checksum.usecases.announcement_check import (
+from hook_tasks.domains.source_checksum.announcement_check_usecase import (
     AlterProductAnnouncementCheck,
     AmakuniProductAnnouncementCheck,
     GscProductAnnouncementCheck,
     NativeProductAnnouncementCheck,
     SiteSourceChceksum,
 )
-from hook_tasks.domains.spiders.scrapy_spider import (
+from hook_tasks.domains.spiders.scrapy_spider_usecase import (
     AlterProductAnnouncementSpider,
     AmakuniProductAnnouncementSpider,
     GscProductAnnouncementSpider,

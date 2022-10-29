@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from babel.dates import format_date
 
-from .entities import EmbedLocale, ReleaseEmbed
+from .create_embed_usecase import EmbedLocale, ReleaseEmbed
 
 if TYPE_CHECKING:
     from discord.embeds import _EmbedFieldProxy

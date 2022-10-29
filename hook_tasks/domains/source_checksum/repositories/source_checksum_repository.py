@@ -1,57 +1,63 @@
 from datetime import datetime
+from typing import Optional
 
 from figure_hook_client.api.source_checksum import (
     create_source_checksum_api_v1_source_checksums_post,
     get_source_checksums_api_v1_source_checksums_get,
-    patch_source_checksum_api_v1_source_checksums_source_checksum_id_patch)
-from figure_hook_client.models.source_checksum_create import \
-    SourceChecksumCreate
+    patch_source_checksum_api_v1_source_checksums_source_checksum_id_patch,
+)
+from figure_hook_client.client import AuthenticatedClient
+from figure_hook_client.models.source_checksum_create import SourceChecksumCreate
 from figure_hook_client.models.source_checksum_in_db import SourceChecksumInDB
-from figure_hook_client.models.source_checksum_update import \
-    SourceChecksumUpdate
-from hook_tasks.api_clients import hook_api_client
+from figure_hook_client.models.source_checksum_update import SourceChecksumUpdate
 
-from ..entities import DTOSourceChecksum
+from ..entities import SourceChecksum
 
 
-class ChecksumRepository:
-    @staticmethod
-    def create_checksum(source_checksum: "DTOSourceChecksum") -> "DTOSourceChecksum":
+class SourceChecksumRepository:
+    api_client: AuthenticatedClient
+
+    def __init__(self, api_client: AuthenticatedClient) -> None:
+        self.api_client = api_client
+
+    def create_checksum(
+        self, source_name: str, checksum_value: str
+    ) -> "SourceChecksum":
         checksum_create = SourceChecksumCreate(
-            source=source_checksum.source_name,
-            checksum=source_checksum.value,
+            source=source_name,
+            checksum=checksum_value,
             checked_at=datetime.now(),
         )
         created_checksum = create_source_checksum_api_v1_source_checksums_post.sync(
-            client=hook_api_client, json_body=checksum_create
+            client=self.api_client, json_body=checksum_create
         )
 
         if isinstance(created_checksum, SourceChecksumInDB):
-            source_checksum.id = created_checksum.id
-            source_checksum.value = created_checksum.checksum
-            return source_checksum
+            return SourceChecksum(
+                id=created_checksum.id,
+                value=created_checksum.checksum,
+                source_name=created_checksum.source,
+            )
 
         raise NotImplementedError
 
-    @staticmethod
-    def get_checksum_by_source(source_name: str) -> "DTOSourceChecksum":
+    def get_checksum_by_source(self, source_name: str) -> Optional["SourceChecksum"]:
         fetched_checksums = get_source_checksums_api_v1_source_checksums_get.sync(
-            source=source_name, client=hook_api_client, limit=1
+            source=source_name, client=self.api_client, limit=1
         )
 
         if isinstance(fetched_checksums, list):
             if len(fetched_checksums) > 0:
-                return DTOSourceChecksum(
+                return SourceChecksum(
                     id=fetched_checksums[0].id,
                     value=fetched_checksums[0].checksum,
                     source_name=source_name,
                 )
-            return DTOSourceChecksum(source_name=source_name)
+            return None
 
         raise NotImplementedError
 
-    @staticmethod
-    def update_checksum(source_checksum: "DTOSourceChecksum") -> "DTOSourceChecksum":
+    def save(self, source_checksum: "SourceChecksum") -> "SourceChecksum":
         assert source_checksum.id
         checksum_update = SourceChecksumUpdate(
             source=source_checksum.source_name,
@@ -61,7 +67,7 @@ class ChecksumRepository:
         updated_checksum = (
             patch_source_checksum_api_v1_source_checksums_source_checksum_id_patch.sync(
                 source_checksum_id=source_checksum.id,
-                client=hook_api_client,
+                client=self.api_client,
                 json_body=checksum_update,
             )
         )

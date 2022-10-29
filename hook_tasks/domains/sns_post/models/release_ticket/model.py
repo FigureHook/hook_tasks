@@ -1,17 +1,13 @@
+from datetime import date, datetime
+from typing import Optional
+
 from pydantic import BaseModel
-from datetime import datetime
 
 
 class ReleaseTicketInfo(BaseModel):
     id: str
     purpose: str
     created_at: datetime
-
-
-from datetime import date
-from typing import Optional
-
-from pydantic import BaseModel
 
 
 class ReleaseFeed(BaseModel):

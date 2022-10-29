@@ -1,6 +1,6 @@
 import re
 
-from hook_tasks.domains.sns_post.plurk.helpers import PlurkFormatHelper
+from hook_tasks.domains.sns_post.plurk.format_helper import PlurkFormatHelper
 
 
 def test_bold():
