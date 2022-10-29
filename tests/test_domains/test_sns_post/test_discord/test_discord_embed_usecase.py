@@ -2,14 +2,14 @@ import re
 from datetime import date
 from discord import Embed
 from hook_tasks.domains.sns_post.discord.entities import EmbedLocale, ReleaseEmbed
-from hook_tasks.domains.sns_post.discord.usecases.create_embed import (
+from hook_tasks.domains.sns_post.discord.create_embed import (
     create_new_release_embed,
     create_welcome_embed,
 )
-from hook_tasks.domains.sns_post.discord.usecases.localize_embed import (
+from hook_tasks.domains.sns_post.discord.localize_embed import (
     localize_release_embed_with_locale,
 )
-from hook_tasks.domains.sns_post.entities import ReleaseFeed
+from hook_tasks.domains.sns_post.models.release_ticket.model import ReleaseFeed
 
 
 def test_create_welcom_embed():

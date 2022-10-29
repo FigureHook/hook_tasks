@@ -1,7 +1,7 @@
 from discord import Colour, Embed
-from hook_tasks.domains.sns_post.entities import ReleaseFeed
+from hook_tasks.domains.sns_post.models.release_ticket.model import ReleaseFeed
 
-from ..entities import ReleaseEmbed
+from .entities import ReleaseEmbed
 
 __all__ = ("create_new_release_embed", "create_welcome_embed")
 

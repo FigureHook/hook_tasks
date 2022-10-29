@@ -2,21 +2,19 @@ from datetime import date
 from typing import Optional
 
 from babel.dates import format_date
-from hook_tasks.domains.sns_post.entities import ReleaseFeed
+from hook_tasks.domains.sns_post.models.release_ticket.model import ReleaseFeed
 from hook_tasks.domains.sns_post.plurk.entities import DOPlurkModel, PlurkConfig
 
-from ..helpers import PlurkFormatHelper
+from .helpers import PlurkFormatHelper
 
-__all__ = ("create_plurk", "create_new_release_plurk")
+__all__ = ("create_plurk", "create_new_release_plurk_by_release_feed")
 
 
 def create_plurk(content: str, plurk_config: PlurkConfig) -> DOPlurkModel:
     return DOPlurkModel(content=content, config=plurk_config)
 
 
-def create_new_release_plurk(
-    release_feed: ReleaseFeed, plurk_config: PlurkConfig
-) -> DOPlurkModel:
+def create_new_release_plurk_by_release_feed(release_feed: ReleaseFeed) -> DOPlurkModel:
     category_text = _get_category_text(release_feed.rerelease)
     post_header = _get_post_header_by_category(category_text)
     post_body = _get_post_body_by_release_feed(release_feed=release_feed)
@@ -25,7 +23,12 @@ def create_new_release_plurk(
 
     content = post_header + post_body + sep_line + ad_block
 
-    return create_plurk(content=content, plurk_config=plurk_config)
+    return create_plurk(
+        content=content,
+        plurk_config=PlurkConfig(
+            qualifier="shares", porn=release_feed.is_adult, lang="tr_ch"
+        ),
+    )
 
 
 UNKNOWN_TEXT = "未定"
