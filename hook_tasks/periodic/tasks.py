@@ -17,12 +17,12 @@ from hook_tasks.domains.source_checksum.usecases.announcement_check import (
     NativeProductAnnouncementCheck,
     SiteSourceChceksum,
 )
-from hook_tasks.domains.spiders.usecases.scrapy_spider import (
-    AlterProductAnnouncementSpiderUseCase,
-    AmakuniProductAnnouncementSpiderUseCase,
-    GscProductAnnouncementSpiderUseCase,
-    NativeProductAnnouncementSpiderUseCase,
-    ProductAnnouncementSpiderUseCase,
+from hook_tasks.domains.spiders.scrapy_spider import (
+    AlterProductAnnouncementSpider,
+    AmakuniProductAnnouncementSpider,
+    GscProductAnnouncementSpider,
+    NativeProductAnnouncementSpider,
+    ProductAnnouncementSpider,
 )
 from hook_tasks.infras.persistance.release_ticket.release_ticket_repository import (
     ReleaseTicketRepository,
@@ -35,25 +35,25 @@ logger = get_task_logger(__name__)
 
 class CheckSpider(TypedDict):
     check: Type[SiteSourceChceksum]
-    spider: Type[ProductAnnouncementSpiderUseCase]
+    spider: Type[ProductAnnouncementSpider]
 
 
 all_new_release_checks: Dict[str, CheckSpider] = {
     "alter": {
         "check": AlterProductAnnouncementCheck,
-        "spider": AlterProductAnnouncementSpiderUseCase,
+        "spider": AlterProductAnnouncementSpider,
     },
     "gsc": {
         "check": GscProductAnnouncementCheck,
-        "spider": GscProductAnnouncementSpiderUseCase,
+        "spider": GscProductAnnouncementSpider,
     },
     "native": {
         "check": NativeProductAnnouncementCheck,
-        "spider": NativeProductAnnouncementSpiderUseCase,
+        "spider": NativeProductAnnouncementSpider,
     },
     "amakuni": {
         "check": AmakuniProductAnnouncementCheck,
-        "spider": AmakuniProductAnnouncementSpiderUseCase,
+        "spider": AmakuniProductAnnouncementSpider,
     },
 }
 
