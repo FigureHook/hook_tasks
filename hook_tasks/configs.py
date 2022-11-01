@@ -53,10 +53,10 @@ class PlurkApiSettings(BaseSettings):
 
 
 class RedisSettings(BaseSettings):
-    host: str
-    port: int
-    username: str
-    password: str
+    host: str = Field(..., env="REDIS_HOST")
+    port: int = Field(..., env="REDIS_PORT")
+    username: str = Field(..., env="REDIS_USERNAME")
+    password: str = Field(..., env="REDIS_PASSWORD  ")
 
     class Config:
         env_file = ".env"
