@@ -4,14 +4,11 @@ from datetime import date
 import pytest
 from discord import Embed
 from hook_tasks.domains.sns_post.discord.create_embed_usecase import (
-    EmbedLocale,
-    ReleaseEmbed,
-    create_new_release_embed,
-    create_welcome_embed,
-)
-from hook_tasks.domains.sns_post.discord.localize_embed_usecase import (
-    localize_release_embed_with_locale,
-)
+    ReleaseEmbed, create_new_release_embed, create_welcome_embed)
+from hook_tasks.domains.sns_post.discord.entities.webhook import \
+    DiscordWebhookLocale
+from hook_tasks.domains.sns_post.discord.localize_embed_usecase import \
+    localize_release_embed_with_locale
 from hook_tasks.domains.sns_post.models.release_ticket.model import ReleaseFeed
 
 
@@ -68,7 +65,7 @@ def test_localize_release_embed(release_feed_factory):
     )
     new_release_embed = create_new_release_embed(release_feed=release_feed)
 
-    for locale in EmbedLocale:
+    for locale in DiscordWebhookLocale:
         localized_embed = localize_release_embed_with_locale(
             release_embed=new_release_embed, locale=locale
         )

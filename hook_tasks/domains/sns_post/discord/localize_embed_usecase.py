@@ -2,14 +2,15 @@ from datetime import date, datetime
 from typing import TYPE_CHECKING
 
 from babel.dates import format_date
-
-from .create_embed_usecase import EmbedLocale, ReleaseEmbed
+from .entities.webhook import DiscordWebhookLocale
+from .create_embed_usecase import ReleaseEmbed
+from babel import Locale
 
 if TYPE_CHECKING:
     from discord.embeds import _EmbedFieldProxy
 
 embed_templates = {
-    EmbedLocale.EN: {
+    DiscordWebhookLocale.EN: {
         "maker": "Manufacturer",
         "series": "Series",
         "price": "Price",
@@ -22,7 +23,7 @@ embed_templates = {
         "new_release": "New Release",
         "re_release": "Rerelease",
     },
-    EmbedLocale.JA: {
+    DiscordWebhookLocale.JA: {
         "maker": "メーカー",
         "series": "作品名",
         "price": "価格",
@@ -35,7 +36,7 @@ embed_templates = {
         "new_release": "新リリース",
         "re_release": "新リリース（再販）",
     },
-    EmbedLocale.ZH_TW: {
+    DiscordWebhookLocale.ZH_TW: {
         "maker": "製造商",
         "series": "作品名稱",
         "price": "價格",
@@ -51,14 +52,14 @@ embed_templates = {
 }
 
 locale_mapping = {
-    EmbedLocale.EN: "en",
-    EmbedLocale.JA: "ja",
-    EmbedLocale.ZH_TW: "zh",
+    DiscordWebhookLocale.EN: "en",
+    DiscordWebhookLocale.JA: "ja",
+    DiscordWebhookLocale.ZH_TW: "zh",
 }
 
 
 def localize_release_embed_with_locale(
-    release_embed: ReleaseEmbed, locale: EmbedLocale
+    release_embed: ReleaseEmbed, locale: DiscordWebhookLocale
 ) -> ReleaseEmbed:
     embed = release_embed.copy()
     embed_locale = embed_templates[locale]
@@ -91,7 +92,7 @@ def _localize_field_name_with_locale(
 
 def _localize_release_date_field_value_with_locale(
     release_date_field: "_EmbedFieldProxy",
-    locale: EmbedLocale,
+    locale: DiscordWebhookLocale,
 ) -> "_EmbedFieldProxy":
     if release_date_field.value:
         release_date = datetime.strptime(release_date_field.value, "%Y-%m-%d").date()
@@ -101,7 +102,6 @@ def _localize_release_date_field_value_with_locale(
     return release_date_field
 
 
-def _get_localized_release_date_text(release_date: date, locale: EmbedLocale) -> str:
-    babel_locale = locale_mapping.get(locale, "en")
+def _get_localized_release_date_text(release_date: date, locale: DiscordWebhookLocale) -> str:
     date_format = embed_templates[locale]["date_format"]
-    return format_date(release_date, date_format, locale=babel_locale)
+    return format_date(release_date, date_format, locale=Locale.parse(locale))

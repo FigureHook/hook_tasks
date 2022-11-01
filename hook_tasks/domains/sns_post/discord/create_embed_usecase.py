@@ -1,22 +1,11 @@
 from copy import deepcopy
 from datetime import date
-from enum import Enum
 from typing import Any, Optional
 
 from hook_tasks.domains.sns_post.models.release_ticket.model import ReleaseFeed
 from typing_extensions import Self
 
 from discord import Colour, Embed
-
-
-class StrEnum(str, Enum):
-    ...
-
-
-class EmbedLocale(StrEnum):
-    ZH_TW = "zh-TW"
-    EN = "en"
-    JA = "ja"
 
 
 class ReleaseEmbed(Embed):

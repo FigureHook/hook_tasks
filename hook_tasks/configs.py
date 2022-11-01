@@ -50,3 +50,13 @@ class PlurkApiSettings(BaseSettings):
 
     class Config:
         env_file = ".env"
+
+
+class RedisSettings(BaseSettings):
+    host: str
+    port: int
+    username: str
+    password: str
+
+    class Config:
+        env_file = ".env"
