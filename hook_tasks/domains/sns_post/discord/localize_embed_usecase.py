@@ -51,12 +51,6 @@ embed_templates = {
     },
 }
 
-locale_mapping = {
-    DiscordWebhookLocale.EN: "en",
-    DiscordWebhookLocale.JA: "ja",
-    DiscordWebhookLocale.ZH_TW: "zh",
-}
-
 
 def localize_release_embed_with_locale(
     release_embed: ReleaseEmbed, locale: DiscordWebhookLocale
@@ -102,6 +96,8 @@ def _localize_release_date_field_value_with_locale(
     return release_date_field
 
 
-def _get_localized_release_date_text(release_date: date, locale: DiscordWebhookLocale) -> str:
+def _get_localized_release_date_text(
+    release_date: date, locale: DiscordWebhookLocale
+) -> str:
     date_format = embed_templates[locale]["date_format"]
     return format_date(release_date, date_format, locale=Locale.parse(locale))
