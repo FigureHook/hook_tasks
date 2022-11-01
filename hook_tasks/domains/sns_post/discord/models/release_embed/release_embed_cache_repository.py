@@ -1,5 +1,8 @@
-from typing import Protocol, Sequence, Mapping, Any
-from .model import ReleaseEmbedCacheKeyCriteria, ReleaseEmbedCache
+from typing import Protocol, Sequence
+
+from discord import Embed
+
+from .model import ReleaseEmbedCache, ReleaseEmbedCacheKeyCriteria
 
 
 class ReleaseEmbedCacheRepositoryInterface(Protocol):
@@ -11,7 +14,7 @@ class ReleaseEmbedCacheRepositoryInterface(Protocol):
     def set_embed_cache(
         self,
         cache_key: ReleaseEmbedCacheKeyCriteria,
-        value: Sequence[Mapping[str, Any]],
+        embeds: Sequence[Embed],
         ttl: int,
     ) -> ReleaseEmbedCache:
         raise NotImplementedError

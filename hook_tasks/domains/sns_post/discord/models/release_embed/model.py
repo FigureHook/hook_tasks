@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Mapping, Sequence, Any
+from discord import Embed
 
 
 class ReleaseEmbedCacheKeyCriteria(BaseModel):
@@ -14,4 +15,4 @@ class ReleaseEmbedCacheKeyCriteria(BaseModel):
 
 class ReleaseEmbedCache(BaseModel):
     key: ReleaseEmbedCacheKeyCriteria
-    value: Sequence[Mapping[str, Any]]
+    value: Sequence[Embed]

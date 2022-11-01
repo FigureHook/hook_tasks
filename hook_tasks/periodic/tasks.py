@@ -135,8 +135,8 @@ def create_embed_data_cache(ticket_id: str) -> str | None:
         return None
 
     for lang in all_langs:
-        sfw_embeds = []
-        nsfw_embeds = []
+        sfw_embeds: List[Embed] = []
+        nsfw_embeds: List[Embed] = []
         for feed in release_feeds:
             release_embed = create_new_release_embed(release_feed=feed)
             localized_embed = localize_release_embed_with_locale(
@@ -149,13 +149,13 @@ def create_embed_data_cache(ticket_id: str) -> str | None:
         sfw_cache_key = ReleaseEmbedCacheKeyCriteria(
             ticket_id=ticket_id, is_nsfw=False, lang=lang
         )
-        cache.set_embed_cache(cache_key=sfw_cache_key, value=sfw_embeds, ttl=cache_ttl)
+        cache.set_embed_cache(cache_key=sfw_cache_key, embeds=sfw_embeds, ttl=cache_ttl)
 
         nsfw_cache_key = ReleaseEmbedCacheKeyCriteria(
             ticket_id=ticket_id, is_nsfw=True, lang=lang
         )
         cache.set_embed_cache(
-            cache_key=nsfw_cache_key, value=nsfw_embeds, ttl=cache_ttl
+            cache_key=nsfw_cache_key, embeds=nsfw_embeds, ttl=cache_ttl
         )
 
     return ticket_id
@@ -189,8 +189,7 @@ def process_new_release_discord_webhook_by_ticket_id(
     embed_cache = cache.get_embed_cache(cache_key=cache_key)
     if embed_cache:
         embeds_dicts = []
-        for embed_dict in embed_cache.value:
-            embed = Embed.from_dict(embed_dict)
+        for embed in embed_cache.value:
             embed = set_release_embed_tracking_footer(embed=embed, ticket_id=ticket_id)
             embeds_dicts.append(embed.to_dict())
 
