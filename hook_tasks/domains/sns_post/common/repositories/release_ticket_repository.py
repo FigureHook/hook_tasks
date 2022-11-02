@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import Generic, List, Protocol, TypeVar
 
-
-from .model import ReleaseTicketInfo, ReleaseFeed
+from ..entities.release_ticket_info import ReleaseTicketInfo
+from ..value_objects.release_feed import ReleaseFeed
 
 TicketID = TypeVar("TicketID", contravariant=True)
 

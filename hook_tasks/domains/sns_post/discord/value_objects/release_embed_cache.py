@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Mapping, Sequence, Any
+from typing import Sequence
 from discord import Embed
 
 

@@ -3,11 +3,11 @@ from typing import Optional, Sequence
 
 import redis
 from discord import Embed
-from hook_tasks.domains.sns_post.discord.models.release_embed.model import (
+from hook_tasks.domains.sns_post.discord.value_objects.release_embed_cache import (
     ReleaseEmbedCache,
     ReleaseEmbedCacheKeyCriteria,
 )
-from hook_tasks.domains.sns_post.discord.models.release_embed.release_embed_cache_repository import (
+from hook_tasks.domains.sns_post.discord.repositories.release_embed_cache_repository import (
     ReleaseEmbedCacheRepositoryInterface,
 )
 

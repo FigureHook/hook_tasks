@@ -13,7 +13,7 @@ from hook_tasks.domains.sns_post.discord.entities.webhook import (
     DiscordWebhook,
     DiscordWebhookLocale,
 )
-from hook_tasks.domains.sns_post.discord.entities.webhook_repository import (
+from hook_tasks.domains.sns_post.discord.repositories.webhook_repository import (
     DiscordWebhookRepositoryInterface,
 )
 

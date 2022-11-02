@@ -6,7 +6,7 @@ from hook_tasks.configs import SpiderSettings
 from hook_tasks.helpers import JapanDatetimeHelper
 from scrapyd_client.lib import get_spiders, schedule
 
-from .spider_config import (
+from .value_objects.spider_config import (
     AlterProductSpiderConfig,
     AmakuniProductSpiderConfig,
     EmptyConfig,

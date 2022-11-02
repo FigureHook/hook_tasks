@@ -15,11 +15,11 @@ from hook_tasks.domains.sns_post.discord.create_embed_usecase import (
 from hook_tasks.domains.sns_post.discord.localize_embed_usecase import (
     localize_release_embed_with_locale,
 )
-from hook_tasks.domains.sns_post.discord.models.release_embed.model import (
-    ReleaseEmbedCacheKeyCriteria,
-)
 from hook_tasks.domains.sns_post.discord.set_embed_tracking_footer import (
     set_release_embed_tracking_footer,
+)
+from hook_tasks.domains.sns_post.discord.value_objects.release_embed_cache import (
+    ReleaseEmbedCacheKeyCriteria,
 )
 from hook_tasks.domains.sns_post.plurk.create_plurk_usecase import (
     create_new_release_plurk_by_release_feed,

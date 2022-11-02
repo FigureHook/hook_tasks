@@ -1,6 +1,6 @@
 from typing import Protocol, List
 
-from .webhook import DiscordWebhook, DiscordWebhookLocale
+from ..entities.webhook import DiscordWebhook, DiscordWebhookLocale
 
 
 class DiscordWebhookRepositoryInterface(Protocol):

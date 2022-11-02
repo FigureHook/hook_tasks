@@ -2,7 +2,7 @@ from copy import deepcopy
 from datetime import date
 from typing import Any, Optional
 
-from hook_tasks.domains.sns_post.models.release_ticket.model import ReleaseFeed
+from hook_tasks.domains.sns_post.common.value_objects.release_feed import ReleaseFeed
 from typing_extensions import Self
 
 from discord import Colour, Embed

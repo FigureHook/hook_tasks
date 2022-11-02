@@ -1,107 +1,15 @@
 from datetime import date
-from enum import IntEnum
-from typing import List, Literal, Optional
+from typing import Optional
 
 from babel.dates import format_date
-from hook_tasks.domains.sns_post.models.release_ticket.model import ReleaseFeed
-from pydantic import BaseModel
+from hook_tasks.domains.sns_post.common.value_objects.release_feed import ReleaseFeed
 
 from .format_helper import PlurkFormatHelper
-
-PlurkQualifier = Literal[
-    "plays",
-    "buys",
-    "sells",
-    "loves",
-    "likes",
-    "shares",
-    "hates",
-    "wants",
-    "wishes",
-    "needs",
-    "has",
-    "will",
-    "hopes",
-    "asks",
-    "wonders",
-    "feels",
-    "thinks",
-    "draws",
-    "is",
-    "says",
-    "eats",
-    "writes",
-    "whispers",
-]
-
-PlurkLang = Literal[
-    "en",
-    "tr_ch",
-    "tr_hk",
-    "cn",
-    "ja",
-    "ca",
-    "el",
-    "dk",
-    "de",
-    "es",
-    "sv",
-    "nb",
-    "hi",
-    "ro",
-    "hr",
-    "fr",
-    "ru",
-    "it",
-    "he",
-    "hu",
-    "ne",
-    "th",
-    "ta_fp",
-    "in",
-    "pl",
-    "ar",
-    "fi",
-    "tr",
-    "ga",
-    "sk",
-    "uk",
-    "fa",
-    "pt_BR",
-]
+from .value_objects.plurk_model import PlurkModel
+from .value_objects.plurk_config import PlurkConfig
 
 
-class PlurkCommentPermission(IntEnum):
-    DEFAULT = 0
-    NO_COMMENTS = 1
-    ONLY_FRIENDS = 2
-
-
-class PlurkConfig(BaseModel):
-    qualifier: PlurkQualifier
-    limited_to: List[int] = []
-    excluded: Optional[List[int]] = None
-    no_comments: PlurkCommentPermission = PlurkCommentPermission.DEFAULT
-    lang: PlurkLang = "en"
-    replurkable: bool = True
-    porn: bool = False
-    publish_to_fllowers: bool = True
-    publish_to_anonymous: bool = True
-
-
-class DOPlurkModel(BaseModel):
-    content: str
-    config: PlurkConfig
-
-    def to_plurk_config(self):
-        return {"content": self.content, **self.config.dict()}
-
-
-def create_plurk(content: str, plurk_config: PlurkConfig) -> DOPlurkModel:
-    return DOPlurkModel(content=content, config=plurk_config)
-
-
-def create_new_release_plurk_by_release_feed(release_feed: ReleaseFeed) -> DOPlurkModel:
+def create_new_release_plurk_by_release_feed(release_feed: ReleaseFeed) -> PlurkModel:
     category_text = _get_category_text(release_feed.rerelease)
     post_header = _get_post_header_by_category(category_text)
     post_body = _get_post_body_by_release_feed(release_feed=release_feed)
@@ -110,9 +18,9 @@ def create_new_release_plurk_by_release_feed(release_feed: ReleaseFeed) -> DOPlu
 
     content = post_header + post_body + sep_line + ad_block
 
-    return create_plurk(
+    return PlurkModel(
         content=content,
-        plurk_config=PlurkConfig(
+        config=PlurkConfig(
             qualifier="shares", porn=release_feed.is_adult, lang="tr_ch"
         ),
     )

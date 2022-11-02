@@ -2,7 +2,10 @@ from typing import Protocol, Sequence
 
 from discord import Embed
 
-from .model import ReleaseEmbedCache, ReleaseEmbedCacheKeyCriteria
+from ..value_objects.release_embed_cache import (
+    ReleaseEmbedCache,
+    ReleaseEmbedCacheKeyCriteria,
+)
 
 
 class ReleaseEmbedCacheRepositoryInterface(Protocol):
