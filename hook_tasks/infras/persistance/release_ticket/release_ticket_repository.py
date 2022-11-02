@@ -54,7 +54,7 @@ class ReleaseTicketRepository(ReleaseTicketRepositoryInterface[str]):
 
         raise NotImplementedError
 
-    def get_release_tickets(self, limit: int = 50) -> List[ReleaseTicketInDB]:
+    def get_release_ticket_infos(self, limit: int = 50) -> List[ReleaseTicketInDB]:
         ticket_pagination = get_multi_release_tickets_api_v1_release_tickets_get.sync(
             client=self.api_client, size=limit
         )
@@ -63,7 +63,7 @@ class ReleaseTicketRepository(ReleaseTicketRepositoryInterface[str]):
 
         raise NotImplementedError
 
-    def create_release_ticket_by_time_with_purpose(
+    def create_release_ticket_info_by_time_with_purpose(
         self, time: datetime, purpose: str
     ) -> ReleaseTicketInfo:
         ticket_create = ReleaseTicketCreate(from_=time, purpose=purpose)

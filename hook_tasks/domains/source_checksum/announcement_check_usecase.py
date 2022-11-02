@@ -6,7 +6,7 @@ import requests as rq
 from hook_tasks.api_clients import hook_api_client
 from hook_tasks.helpers import JapanDatetimeHelper
 
-from .entities import SourceChecksum
+from .entities.source_checksum import SourceChecksum
 from .repositories.source_checksum_repository import SourceChecksumRepository
 
 
@@ -24,7 +24,7 @@ checksum_repo = SourceChecksumRepository(api_client=hook_api_client)
 class SiteSourceChceksum(ABC):
     __source_site__: ClassVar[str]
 
-    _checksum_dto: SourceChecksum
+    _checksum: SourceChecksum
     _current_checksum_value: str
     _synchronizable: bool
 
@@ -32,7 +32,7 @@ class SiteSourceChceksum(ABC):
         if not self.__source_site__:
             raise ValueError("Class variable `__source_site__` should be set.")
 
-        self._checksum_dto = checksum
+        self._checksum = checksum
         self._current_checksum_value = CHECKSUM_INIT_VALUE
         self._synchronizable = False
 
@@ -44,16 +44,16 @@ class SiteSourceChceksum(ABC):
 
     def is_changed(self) -> bool:
         current_checksum = self._get_current_checksum_value()
-        return self._checksum_dto.value != current_checksum
+        return self._checksum.value != current_checksum
 
     def sync(self):
-        self._checksum_dto.value = (
+        self._checksum.value = (
             self._current_checksum_value
             if self._synchronizable
             else self._get_current_checksum_value()
         )
 
-        self._checksum_dto = checksum_repo.save(self._checksum_dto)
+        self._checksum = checksum_repo.save(self._checksum)
 
         return self
 

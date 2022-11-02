@@ -11,7 +11,7 @@ from figure_hook_client.models.source_checksum_create import SourceChecksumCreat
 from figure_hook_client.models.source_checksum_in_db import SourceChecksumInDB
 from figure_hook_client.models.source_checksum_update import SourceChecksumUpdate
 
-from ..entities import SourceChecksum
+from ..entities.source_checksum import SourceChecksum
 
 
 class SourceChecksumRepository:
