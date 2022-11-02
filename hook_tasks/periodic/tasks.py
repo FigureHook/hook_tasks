@@ -122,6 +122,15 @@ def push_new_release_to_discord_webhook():
 
 
 @app.task
+def push_new_release_to_plurk():
+    ticket = create_release_ticket_for_purpose.s("plurk_new_release").apply_async()
+    ticket_id = ticket.get()
+
+    if ticket_id:
+        post_new_releases_to_plurk.s(ticket_id).apply_async()
+
+
+@app.task
 def create_embed_data_cache(ticket_id: str) -> str | None:
     cache_ttl = 30 * 60
     ticket_repo = ReleaseTicketRepository(api_client=hook_api_client)

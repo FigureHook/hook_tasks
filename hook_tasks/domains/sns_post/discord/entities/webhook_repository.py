@@ -1,14 +1,16 @@
 from typing import Protocol, List
 
-from .webhook import DiscordWebhook
+from .webhook import DiscordWebhook, DiscordWebhookLocale
 
 
 class DiscordWebhookRepositoryInterface(Protocol):
-    def get_all_langs(self) -> List[str]:
+    def get_all_langs(self) -> List[DiscordWebhookLocale]:
         raise NotImplementedError
 
     def get_all_webhooks(self) -> List[DiscordWebhook]:
         raise NotImplementedError
 
-    def update_existed_status(self, webhook:DiscordWebhook, is_existed: bool) -> DiscordWebhook:
+    def update_existed_status_by_webhook_id(
+        self, webhook_id: str, is_existed: bool
+    ) -> DiscordWebhook:
         raise NotImplementedError
