@@ -3,11 +3,12 @@ from hashlib import md5
 from typing import ClassVar
 
 import requests as rq
-from hook_tasks.api_clients import hook_api_client
+
 from hook_tasks.helpers import JapanDatetimeHelper
 
 from .entities.source_checksum import SourceChecksum
-from .repositories.source_checksum_repository import SourceChecksumRepository
+from .repositories.source_checksum_repository import \
+    SourceChecksumRepositoryInterface
 
 
 def _generate_checksum_value(target: bytes) -> str:
@@ -18,19 +19,26 @@ def _generate_checksum_value(target: bytes) -> str:
 
 CHECKSUM_INIT_VALUE = "init"
 
-checksum_repo = SourceChecksumRepository(api_client=hook_api_client)
-
 
 class SiteSourceChceksum(ABC):
     __source_site__: ClassVar[str]
+
+    checksum_repo: SourceChecksumRepositoryInterface
 
     _checksum: SourceChecksum
     _current_checksum_value: str
     _synchronizable: bool
 
-    def __init__(self, checksum: SourceChecksum):
+    def __init__(self, checksum_repo: SourceChecksumRepositoryInterface):
         if not self.__source_site__:
             raise ValueError("Class variable `__source_site__` should be set.")
+        self.checksum_repo = checksum_repo
+
+        checksum = self.checksum_repo.get_checksum_by_source(self.__source_site__)
+        if not checksum:
+            checksum = checksum_repo.create_checksum(
+                source_name=self.__source_site__, checksum_value=CHECKSUM_INIT_VALUE
+            )
 
         self._checksum = checksum
         self._current_checksum_value = CHECKSUM_INIT_VALUE
@@ -53,7 +61,7 @@ class SiteSourceChceksum(ABC):
             else self._get_current_checksum_value()
         )
 
-        self._checksum = checksum_repo.save(self._checksum)
+        self._checksum = self.checksum_repo.save(self._checksum)
 
         return self
 
@@ -61,15 +69,6 @@ class SiteSourceChceksum(ABC):
     @abstractmethod
     def extract_feature() -> bytes:
         raise NotImplementedError
-
-    @classmethod
-    def create(cls):
-        checksum = checksum_repo.get_checksum_by_source(cls.__source_site__)
-        if not checksum:
-            checksum = checksum_repo.create_checksum(
-                source_name=cls.__source_site__, checksum_value=CHECKSUM_INIT_VALUE
-            )
-        return cls(checksum=checksum)
 
 
 class GscProductAnnouncementCheck(SiteSourceChceksum):
