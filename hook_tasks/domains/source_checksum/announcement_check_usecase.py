@@ -7,8 +7,7 @@ import requests as rq
 from hook_tasks.helpers import JapanDatetimeHelper
 
 from .entities.source_checksum import SourceChecksum
-from .repositories.source_checksum_repository import \
-    SourceChecksumRepositoryInterface
+from .repositories.source_checksum_repository import SourceChecksumRepositoryInterface
 
 
 def _generate_checksum_value(target: bytes) -> str:
