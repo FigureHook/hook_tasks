@@ -16,13 +16,11 @@ from hook_tasks.tasks.sns_post.common.tasks import create_release_ticket_for_pur
 logger = get_task_logger(__name__)
 
 
-@app.task
+@app.task(ignore_result=True)
 def push_new_release_to_plurk():
-    ticket = create_release_ticket_for_purpose.s("plurk_new_release").apply_async()
-    ticket_id = ticket.get()
-
+    ticket_id = create_release_ticket_for_purpose.delay("plurk_new_release").get()
     if ticket_id:
-        post_new_releases_to_plurk.s(ticket_id).apply_async()
+        post_new_releases_to_plurk.delay(ticket_id).get()
 
 
 @app.task
@@ -32,5 +30,5 @@ def post_new_releases_to_plurk(ticket_id: str) -> None:
 
     for feed in release_feeds:
         plurk_model = create_new_release_plurk_by_release_feed(release_feed=feed)
-        post_plurk.apply_async(args=(plurk_model.content, plurk_model.config.dict()))
+        post_plurk.delay(plurk_model.content, plurk_model.config.dict()).get()
         time.sleep(random.randint(5, 20))

@@ -1,19 +1,18 @@
 from typing import Any, Dict, Mapping, Sequence
 
-from discord import Embed, HTTPException, SyncWebhook, NotFound
-from hook_tasks.api_clients import plurk_api, hook_api_client
+from discord import Embed, HTTPException, NotFound, SyncWebhook
+
+from hook_tasks.api_clients import hook_api_client, plurk_api
+from hook_tasks.app import app
+from hook_tasks.domains.sns_post.discord.usecases import CreateEmbedUseCase
 from hook_tasks.infras.persistance.discord_webhook.discord_webhook_repository import (
     DiscordWebhookRepository,
-)
-from hook_tasks.app import app
-from hook_tasks.domains.sns_post.discord.create_embed_usecase import (
-    create_welcome_embed,
 )
 
 
 @app.task(autoretry_for=(HTTPException,), max_retries=3)
 def send_discord_welcome_webhook(webhook_id: int, webhook_token: str, msg: str):
-    welcome_embed = create_welcome_embed(msg=msg)
+    welcome_embed = CreateEmbedUseCase.create_welcome_embed(msg=msg)
     webhook = SyncWebhook.partial(id=webhook_id, token=webhook_token)
     webhook.send(embed=welcome_embed)
 
