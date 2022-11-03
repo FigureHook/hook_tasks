@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Sequence
 from discord import Embed
+from dataclasses import dataclass
 
 
 class ReleaseEmbedCacheKeyCriteria(BaseModel):
@@ -13,6 +14,7 @@ class ReleaseEmbedCacheKeyCriteria(BaseModel):
         return f"{self.ticket_id}_{self.lang}_{nsfw_str}"
 
 
-class ReleaseEmbedCache(BaseModel):
+@dataclass
+class ReleaseEmbedCache:
     key: ReleaseEmbedCacheKeyCriteria
     value: Sequence[Embed]

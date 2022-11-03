@@ -1,10 +1,11 @@
 from datetime import date, datetime
 from typing import TYPE_CHECKING
 
-from babel.dates import format_date
-from .entities.webhook import DiscordWebhookLocale
-from .create_embed_usecase import ReleaseEmbed
 from babel import Locale
+from babel.dates import format_date
+
+from ..entities.webhook import DiscordWebhookLocale
+from .create_embed_usecase import ReleaseEmbed
 
 if TYPE_CHECKING:
     from discord.embeds import _EmbedFieldProxy
@@ -100,4 +101,4 @@ def _get_localized_release_date_text(
     release_date: date, locale: DiscordWebhookLocale
 ) -> str:
     date_format = embed_templates[locale]["date_format"]
-    return format_date(release_date, date_format, locale=Locale.parse(locale))
+    return format_date(release_date, date_format, locale=Locale.parse(locale, sep="-"))
