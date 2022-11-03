@@ -25,11 +25,13 @@ deploy.env
 *.csv
 *.log
 *.sql
-celerybeat-schedule
 *.pid
 *.drawio
 *.mo
 *.*~
+
+# beat file
+celerybeat-schedule*
 
 # vscode
 **/.vscode/launch.json

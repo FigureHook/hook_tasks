@@ -56,7 +56,7 @@ class RedisSettings(BaseSettings):
     host: str = Field(..., env="REDIS_HOST")
     port: int = Field(..., env="REDIS_PORT")
     username: str = Field(..., env="REDIS_USERNAME")
-    password: str = Field(..., env="REDIS_PASSWORD  ")
+    password: str = Field(..., env="REDIS_PASSWORD")
 
     class Config:
         env_file = ".env"
