@@ -11,7 +11,7 @@ from ..value_objects.release_embed_cache import (
 class ReleaseEmbedCacheRepositoryInterface(Protocol):
     def get_embed_cache(
         self, cache_key: ReleaseEmbedCacheKeyCriteria
-    ) -> ReleaseEmbedCache:
+    ) -> ReleaseEmbedCache | None:
         raise NotImplementedError
 
     def set_embed_cache(

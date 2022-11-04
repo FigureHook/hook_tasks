@@ -51,4 +51,4 @@ def post_plurk(self, content: str, config: Dict[str, Any]):
         """
         self.retry(countdown=30, max_retries=3)
 
-    return resp
+    return plurk_api.error

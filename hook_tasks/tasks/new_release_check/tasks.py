@@ -5,7 +5,7 @@ from requests import HTTPError
 
 from hook_tasks.api_clients import hook_api_client
 from hook_tasks.app import app
-from hook_tasks.domains.source_checksum.announcement_check_usecase import (
+from hook_tasks.domains.source_checksum.announcement_check_use_case import (
     AlterProductAnnouncementCheck,
     AmakuniProductAnnouncementCheck,
     GscProductAnnouncementCheck,

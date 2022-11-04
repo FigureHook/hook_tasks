@@ -15,7 +15,7 @@ from hook_tasks.domains.sns_post.discord.value_objects.release_embed_cache impor
     ReleaseEmbedCacheKeyCriteria,
 )
 from hook_tasks.infras.cache.release_embed.release_embed_repository import (
-    ReleaseEmbedCacheRepository,
+    ReleaseEmebedMeomoryCacheRepository,
 )
 from hook_tasks.infras.persistance.discord_webhook.discord_webhook_repository import (
     DiscordWebhookRepository,
@@ -39,7 +39,7 @@ def push_new_release_to_discord_webhook():
     ticket_id = ticket_use_case.create_release_ticket_for_purpose("discord_new_release")
 
     webhook_repo = DiscordWebhookRepository(client=hook_api_client)
-    cache = ReleaseEmbedCacheRepository(client=redis_client)
+    cache = ReleaseEmebedMeomoryCacheRepository()
     cache_usecase = PreheatEmbedCacheUseCase(
         ticket_repo=ticket_repo, webhook_repo=webhook_repo, cache=cache
     )

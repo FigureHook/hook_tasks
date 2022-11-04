@@ -2,7 +2,7 @@ from pydantic_factories import ModelFactory
 from pydantic_factories.plugins.pytest_plugin import register_fixture
 from pytest_mock import MockerFixture
 
-from hook_tasks.domains.source_checksum.announcement_check_usecase import (
+from hook_tasks.domains.source_checksum.announcement_check_use_case import (
     AlterProductAnnouncementCheck,
     AmakuniProductAnnouncementCheck,
     GscProductAnnouncementCheck,
