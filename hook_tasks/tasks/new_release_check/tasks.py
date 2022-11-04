@@ -1,5 +1,4 @@
 from typing import Dict, List, Type, TypedDict
-
 from celery import group
 from celery.utils.log import get_task_logger
 from requests import HTTPError
@@ -54,11 +53,10 @@ all_new_release_checks: Dict[str, CheckSpider] = {
 
 @app.task
 def check_new_release():
-    check_groups = group(
+    return group(
         check_new_release_by_site_name.s(site_name=name)
         for name in all_new_release_checks.keys()
-    )()
-    check_groups.get(timeout=10)
+    ).apply_async()
 
 
 @app.task(autoretry_for=(HTTPError,), retry_kwargs={"max_retries": 5})
