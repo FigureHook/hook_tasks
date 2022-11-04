@@ -1,4 +1,4 @@
-from hook_tasks.domains.spiders.scrapy_spider_usecase import (
+from hook_tasks.domains.spiders.scrapy_spider_use_case import (
     GscProductAnnouncementSpider,
     AlterProductAnnouncementSpider,
     NativeProductAnnouncementSpider,

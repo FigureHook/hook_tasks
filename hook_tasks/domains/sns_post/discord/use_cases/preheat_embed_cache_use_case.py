@@ -15,8 +15,8 @@ from hook_tasks.domains.sns_post.discord.value_objects.release_embed_cache impor
     ReleaseEmbedCacheKeyCriteria,
 )
 
-from .create_embed_usecase import CreateEmbedUseCase
-from .localize_embed_usecase import localize_release_embed_with_locale
+from .create_embed_use_case import CreateEmbedUseCase
+from .localize_embed_use_case import localize_release_embed_with_locale
 
 
 class PreheatEmbedCacheUseCase:

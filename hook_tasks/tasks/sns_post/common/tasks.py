@@ -5,7 +5,7 @@ from discord import Embed, HTTPException, NotFound, SyncWebhook
 
 from hook_tasks.api_clients import hook_api_client, plurk_api
 from hook_tasks.app import app
-from hook_tasks.domains.sns_post.discord.usecases import CreateEmbedUseCase
+from hook_tasks.domains.sns_post.discord.use_cases import CreateEmbedUseCase
 from hook_tasks.infras.persistance.discord_webhook.discord_webhook_repository import (
     DiscordWebhookRepository,
 )

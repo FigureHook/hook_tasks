@@ -12,7 +12,7 @@ from hook_tasks.domains.source_checksum.announcement_check_usecase import (
     NativeProductAnnouncementCheck,
     SiteSourceChceksum,
 )
-from hook_tasks.domains.spiders.scrapy_spider_usecase import (
+from hook_tasks.domains.spiders.scrapy_spider_use_case import (
     AlterProductAnnouncementSpider,
     AmakuniProductAnnouncementSpider,
     GscProductAnnouncementSpider,

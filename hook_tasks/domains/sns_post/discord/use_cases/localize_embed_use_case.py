@@ -5,7 +5,7 @@ from babel import Locale
 from babel.dates import format_date
 
 from ..entities.webhook import DiscordWebhookLocale
-from .create_embed_usecase import ReleaseEmbed
+from .create_embed_use_case import ReleaseEmbed
 
 if TYPE_CHECKING:
     from discord.embeds import _EmbedFieldProxy
