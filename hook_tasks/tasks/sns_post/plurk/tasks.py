@@ -34,7 +34,7 @@ def post_plurk(self, content: str, config: Dict[str, Any]):
 
 
 @app.task
-def post_new_releases_to_plurk(ticket_id: str):
+def post_new_releases_to_plurk():
     ticket_repo = ReleaseTicketRepository(hook_api_client)
     ticket_use_case = CreateReleaseTicketUseCase(ticket_repo=ticket_repo)
 
