@@ -6,6 +6,7 @@ from discord import Embed, HTTPException, NotFound, SyncWebhook
 from hook_tasks.api_clients import hook_api_client, plurk_api
 from hook_tasks.app import app
 from hook_tasks.domains.sns_post.discord.use_cases import CreateEmbedUseCase
+from hook_tasks.domains.sns_post.plurk.errors import AntiFloodError
 from hook_tasks.domains.sns_post.plurk.use_cases.get_plurk_api_error_usecase import (
     GetPlurkApiErrorUserCase,
 )
@@ -39,7 +40,7 @@ def send_discord_embeds_webhook(
         )
 
 
-@app.task(bind=True)
+@app.task(bind=True, throws=(AntiFloodError,))
 def post_plurk(self, content: str, config: Dict[str, Any]):
     options = {content: content, **config}
     resp = plurk_api.callAPI("/APP/Timeline/plurkAdd", options=options)
