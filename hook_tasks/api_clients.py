@@ -1,5 +1,6 @@
 from figure_hook_client.client import AuthenticatedClient
 from plurk_oauth import PlurkAPI
+
 from hook_tasks.configs import HookApiSettings, PlurkApiSettings
 
 hook_api_settings = HookApiSettings()  # type: ignore

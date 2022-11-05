@@ -3,7 +3,6 @@ from typing import List, Literal, Optional
 
 from pydantic import BaseModel
 
-
 PlurkQualifier = Literal[
     "plays",
     "buys",

@@ -9,16 +9,15 @@ from figure_hook_client.api.release_feed import (
 from figure_hook_client.models.page_release_ticket_in_db import PageReleaseTicketInDB
 from figure_hook_client.models.release_ticket_create import ReleaseTicketCreate
 from figure_hook_client.models.release_ticket_in_db import ReleaseTicketInDB
+
 from hook_tasks.api_clients import AuthenticatedClient
 from hook_tasks.domains.sns_post.common.entities.release_ticket_info import (
     ReleaseTicketInfo,
 )
-from hook_tasks.domains.sns_post.common.value_objects.release_feed import (
-    ReleaseFeed,
-)
 from hook_tasks.domains.sns_post.common.repositories.release_ticket_repository import (
     ReleaseTicketRepositoryInterface,
 )
+from hook_tasks.domains.sns_post.common.value_objects.release_feed import ReleaseFeed
 
 
 class ReleaseTicketRepository(ReleaseTicketRepositoryInterface[str]):

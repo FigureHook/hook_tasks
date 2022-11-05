@@ -9,6 +9,7 @@ from figure_hook_client.models.decrypted_webhook_in_db import DecryptedWebhookIn
 from figure_hook_client.models.webhook_lang import WebhookLang
 from figure_hook_client.models.webhook_update import WebhookUpdate
 from figure_hook_client.types import Unset
+
 from hook_tasks.domains.sns_post.discord.entities.webhook import (
     DiscordWebhook,
     DiscordWebhookLocale,

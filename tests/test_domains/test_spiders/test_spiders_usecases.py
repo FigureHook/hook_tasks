@@ -1,12 +1,13 @@
+from pytest_mock import MockerFixture
+
 from hook_tasks.domains.spiders.scrapy_spider_use_case import (
-    GscProductAnnouncementSpider,
     AlterProductAnnouncementSpider,
-    NativeProductAnnouncementSpider,
     AmakuniProductAnnouncementSpider,
+    GscProductAnnouncementSpider,
+    NativeProductAnnouncementSpider,
     get_spiders_from_project,
     trigger_spider,
 )
-from pytest_mock import MockerFixture
 
 
 def test_get_spiders(mocker: MockerFixture):

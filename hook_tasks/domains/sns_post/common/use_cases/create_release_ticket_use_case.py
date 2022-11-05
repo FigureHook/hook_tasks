@@ -1,7 +1,8 @@
-from ..repositories.release_ticket_repository import ReleaseTicketRepositoryInterface
 from hook_tasks.infras.persistance.release_ticket.release_ticket_repository import (
     ReleaseTicketRepository,
 )
+
+from ..repositories.release_ticket_repository import ReleaseTicketRepositoryInterface
 
 
 class CreateReleaseTicketUseCase:

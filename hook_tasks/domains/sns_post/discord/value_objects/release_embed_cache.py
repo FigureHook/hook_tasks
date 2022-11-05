@@ -1,7 +1,8 @@
-from pydantic import BaseModel
-from typing import Sequence
-from discord import Embed
 from dataclasses import dataclass
+from typing import Sequence
+
+from discord import Embed
+from pydantic import BaseModel
 
 
 class ReleaseEmbedCacheKeyCriteria(BaseModel):

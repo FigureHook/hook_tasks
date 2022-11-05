@@ -1,6 +1,7 @@
-from lib2to3.pytree import Base
-from pydantic import BaseModel
 from enum import Enum
+from lib2to3.pytree import Base
+
+from pydantic import BaseModel
 
 
 class StrEnum(str, Enum):

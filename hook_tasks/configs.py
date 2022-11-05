@@ -1,6 +1,19 @@
+import os
+import pathlib
+import tempfile
 from typing import Any, Dict, List, Optional
 
 from pydantic import AnyUrl, BaseSettings, Field, HttpUrl, validator
+
+
+def get_celery_settings():
+    if os.getenv("ENV") == "test":
+        results_dir = pathlib.Path(tempfile.gettempdir()).joinpath(
+            "celery_test_results"
+        )
+        results_dir.mkdir(exist_ok=True)
+        return TestCelerySettings(result_backend=results_dir.as_uri())  # type: ignore
+    return CelerySettings()  # type: ignore
 
 
 class CelerySettings(BaseSettings):
@@ -12,7 +25,6 @@ class CelerySettings(BaseSettings):
     accept_content: List[str] = ["json"]
     enable_utc: bool = True
     broker_url: Optional[AnyUrl] = None
-    # timezone: str = 'Asia/Tokyo'
 
     @validator("broker_url", pre=True)
     def concat_broker_url(cls, v: Optional[str], values: Dict[str, Any]) -> str:
@@ -25,6 +37,10 @@ class CelerySettings(BaseSettings):
 
     class Config:
         env_file = ".env"
+
+
+class TestCelerySettings(CelerySettings):
+    result_backend: str
 
 
 class SpiderSettings(BaseSettings):

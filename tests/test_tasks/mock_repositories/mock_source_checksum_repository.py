@@ -1,6 +1,6 @@
 from hook_tasks.domains.source_checksum.repositories.source_checksum_repository import (
-    SourceChecksumRepositoryInterface,
     SourceChecksum,
+    SourceChecksumRepositoryInterface,
 )
 
 

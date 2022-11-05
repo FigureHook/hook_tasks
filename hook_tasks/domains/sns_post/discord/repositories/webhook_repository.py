@@ -1,4 +1,4 @@
-from typing import Protocol, List
+from typing import List, Protocol
 
 from ..entities.webhook import DiscordWebhook, DiscordWebhookLocale
 

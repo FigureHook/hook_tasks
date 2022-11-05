@@ -1,13 +1,13 @@
 from datetime import datetime
-from typing import Generic, List, Protocol, TypeVar
+from typing import List, Protocol, TypeVar
 
-from ..value_objects.release_feed import ReleaseFeed
 from ..entities.release_ticket_info import ReleaseTicketInfo
+from ..value_objects.release_feed import ReleaseFeed
 
 TicketID = TypeVar("TicketID", contravariant=True)
 
 
-class ReleaseTicketRepositoryInterface(Protocol, Generic[TicketID]):
+class ReleaseTicketRepositoryInterface(Protocol[TicketID]):
     def get_release_feeds_by_ticket_id(self, ticket_id: TicketID) -> List[ReleaseFeed]:
         raise NotImplementedError
 

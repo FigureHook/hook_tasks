@@ -2,9 +2,10 @@ from abc import ABC, abstractmethod
 from typing import ClassVar, List
 
 from figure_parser.enums import AlterCategory, GSCCategory, NativeCategory
+from scrapyd_client.lib import get_spiders, schedule
+
 from hook_tasks.configs import SpiderSettings
 from hook_tasks.helpers import JapanDatetimeHelper
-from scrapyd_client.lib import get_spiders, schedule
 
 from .value_objects.spider_config import (
     AlterProductSpiderConfig,

@@ -1,5 +1,6 @@
-from discord import Embed
 from typing import TypeVar
+
+from discord import Embed
 
 Embed_T = TypeVar("Embed_T", bound=Embed)
 

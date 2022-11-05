@@ -10,10 +10,11 @@ from figure_hook_client.client import AuthenticatedClient
 from figure_hook_client.models.source_checksum_create import SourceChecksumCreate
 from figure_hook_client.models.source_checksum_in_db import SourceChecksumInDB
 from figure_hook_client.models.source_checksum_update import SourceChecksumUpdate
+
+from hook_tasks.domains.source_checksum.entities.source_checksum import SourceChecksum
 from hook_tasks.domains.source_checksum.repositories.source_checksum_repository import (
     SourceChecksumRepositoryInterface,
 )
-from hook_tasks.domains.source_checksum.entities.source_checksum import SourceChecksum
 
 
 class SourceChecksumRepository(SourceChecksumRepositoryInterface):

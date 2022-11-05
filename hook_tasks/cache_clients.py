@@ -1,4 +1,5 @@
 import redis
+
 from .configs import RedisSettings
 
 redis_settings = RedisSettings()  # type: ignore
