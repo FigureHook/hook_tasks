@@ -8,7 +8,6 @@ from .helpers import JapanDatetimeHelper
 app = Celery("celery", config_source=get_celery_settings())
 app.autodiscover_tasks(
     packages=[
-        "hook_tasks.tasks.sns_post.common",
         "hook_tasks.tasks.sns_post.discord",
         "hook_tasks.tasks.sns_post.plurk",
         "hook_tasks.tasks.new_release_check",

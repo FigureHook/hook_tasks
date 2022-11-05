@@ -1,15 +1,19 @@
-from typing import Iterator
+from typing import Any, Iterator, Mapping, Sequence
 
 from celery import group
 from celery.utils.functional import chunks
 from celery.utils.log import get_task_logger
+from discord import Embed, HTTPException, NotFound, SyncWebhook
 
 from hook_tasks.api_clients import hook_api_client
 from hook_tasks.app import app
 from hook_tasks.domains.sns_post.common.use_cases.create_release_ticket_use_case import (
     CreateReleaseTicketUseCase,
 )
-from hook_tasks.domains.sns_post.discord.use_cases import PreheatEmbedCacheUseCase
+from hook_tasks.domains.sns_post.discord.use_cases import (
+    CreateEmbedUseCase,
+    PreheatEmbedCacheUseCase,
+)
 from hook_tasks.domains.sns_post.discord.value_objects.release_embed_cache import (
     ReleaseEmbedCacheKeyCriteria,
 )
@@ -23,7 +27,31 @@ from hook_tasks.infras.persistance.release_ticket.release_ticket_repository impo
     ReleaseTicketRepository,
 )
 
-from ..common.tasks import send_discord_embeds_webhook
+logger = get_task_logger(__name__)
+
+
+@app.task(autoretry_for=(HTTPException,), max_retries=3)
+def send_discord_welcome_webhook(webhook_id: int, webhook_token: str, msg: str):
+    welcome_embed = CreateEmbedUseCase.create_welcome_embed(msg=msg)
+    webhook = SyncWebhook.partial(id=webhook_id, token=webhook_token)
+    webhook.send(embed=welcome_embed)
+
+
+@app.task(autoretry_for=(HTTPException,), max_retries=5, retry_backoff=True)
+def send_discord_embeds_webhook(
+    webhook_id: str, webhook_token: str, embed_dicts: Sequence[Mapping[str, Any]]
+):
+    repo = DiscordWebhookRepository(client=hook_api_client)
+    embeds = [Embed.from_dict(embed_dict) for embed_dict in embed_dicts]
+    webhook = SyncWebhook.partial(id=int(webhook_id), token=webhook_token)
+    try:
+        webhook.send(embeds=embeds)
+        repo.update_existed_status_by_webhook_id(webhook_id=webhook_id, is_existed=True)
+    except NotFound:
+        repo.update_existed_status_by_webhook_id(
+            webhook_id=webhook_id, is_existed=False
+        )
+
 
 logger = get_task_logger(__name__)
 

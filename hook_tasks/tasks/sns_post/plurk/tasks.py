@@ -1,8 +1,9 @@
 import random
+from typing import Any, Dict
 
 from celery.utils.log import get_task_logger
 
-from hook_tasks.api_clients import hook_api_client
+from hook_tasks.api_clients import hook_api_client, plurk_api
 from hook_tasks.app import app
 from hook_tasks.domains.sns_post.common.use_cases.create_release_ticket_use_case import (
     CreateReleaseTicketUseCase,
@@ -10,13 +11,26 @@ from hook_tasks.domains.sns_post.common.use_cases.create_release_ticket_use_case
 from hook_tasks.domains.sns_post.plurk.create_plurk_usecase import (
     create_new_release_plurk_by_release_feed,
 )
+from hook_tasks.domains.sns_post.plurk.errors import AntiFloodError
+from hook_tasks.domains.sns_post.plurk.use_cases.get_plurk_api_error_usecase import (
+    GetPlurkApiErrorUserCase,
+)
 from hook_tasks.infras.persistance.release_ticket.release_ticket_repository import (
     ReleaseTicketRepository,
 )
 
-from ..common.tasks import post_plurk
-
 logger = get_task_logger(__name__)
+
+
+@app.task(bind=True, throws=(AntiFloodError,))
+def post_plurk(self, content: str, config: Dict[str, Any]):
+    options = {content: content, **config}
+    resp = plurk_api.callAPI("/APP/Timeline/plurkAdd", options=options)
+    if not resp:
+        exc = GetPlurkApiErrorUserCase.get_add_plurk_error(error_body=plurk_api.error())
+        self.retry(countdown=30, max_retries=3, exc=exc)
+
+    return plurk_api.error
 
 
 @app.task
