@@ -53,12 +53,19 @@ class ReleaseTicketRepository(ReleaseTicketRepositoryInterface[str]):
 
         raise NotImplementedError
 
-    def get_release_ticket_infos(self, limit: int = 50) -> List[ReleaseTicketInDB]:
+    def get_release_ticket_infos(self, limit: int = 50) -> List[ReleaseTicketInfo]:
         ticket_pagination = get_multi_release_tickets_api_v1_release_tickets_get.sync(
             client=self.api_client, size=limit
         )
         if isinstance(ticket_pagination, PageReleaseTicketInDB):
-            return ticket_pagination.results
+            return [
+                ReleaseTicketInfo(
+                    id=db_ticket.id,
+                    purpose=db_ticket.purpose,
+                    created_at=db_ticket.created_at,
+                )
+                for db_ticket in ticket_pagination.results
+            ]
 
         raise NotImplementedError
 

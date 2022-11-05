@@ -3,7 +3,6 @@ from datetime import date
 from typing import Any, Optional
 
 from discord import Colour, Embed
-from typing_extensions import Self
 
 from hook_tasks.domains.sns_post.common.value_objects.release_feed import ReleaseFeed
 
@@ -19,34 +18,34 @@ class ReleaseEmbed(Embed):
     def is_nsfw(self):
         return self._is_nsfw
 
-    def copy(self) -> Self:
+    def copy(self):
         return deepcopy(super().copy())
 
-    def add_field(self, *, name: str, value: Any, inline: bool = True) -> Self:
+    def add_field(self, *, name: str, value: Any, inline: bool = True):
         if not value:
             return self
         return super().add_field(name=name, value=value, inline=inline)
 
-    def set_price(self, *, price: Optional[int]) -> Self:
+    def set_price(self, *, price: Optional[int]):
         if price:
             self.add_field(name="price", value=f"JPY {price:,}", inline=True)
         return self
 
-    def set_release_date(self, *, release_date: Optional[date]) -> Self:
+    def set_release_date(self, *, release_date: Optional[date]):
         self.add_field(name="release_date", value=release_date, inline=True)
         return self
 
-    def set_size(self, *, size: Optional[int]) -> Self:
+    def set_size(self, *, size: Optional[int]):
         if size:
             self.add_field(name="size", value=f"{size} mm", inline=True)
         return self
 
-    def set_scale(self, *, scale: Optional[int]) -> Self:
+    def set_scale(self, *, scale: Optional[int]):
         if scale:
             self.add_field(name="scale", value=f"1/{scale}", inline=True)
         return self
 
-    def set_nsfw(self, *, is_nsfw: bool) -> Self:
+    def set_nsfw(self, *, is_nsfw: bool):
         self._is_nsfw = is_nsfw
         return self
 
@@ -64,11 +63,11 @@ class CreateEmbedUseCase:
                 title=release_feed.name,
                 url=release_feed.url,
             )
+            .set_nsfw(is_nsfw=release_feed.is_adult)
             .set_author(
                 name=info_category,
                 icon_url=NEW_RELEASE_ICON_URL,
             )
-            .set_nsfw(is_nsfw=release_feed.is_adult)
             .set_price(price=release_feed.price)
             .set_release_date(release_date=release_feed.release_date)
             .set_size(size=release_feed.size)
