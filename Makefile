@@ -14,15 +14,18 @@ format: # Format the code.
 	isort -e .; \
 	black .
 
-test: # Run the tests.
-	coverage run -m pytest
+unit-tests: # Run the unit-tests.
+	coverage run -m pytest -k "unit_tests"; \
+	coverage combine; \
+	coverage report --precision=2 -m
 
-cov-report: test # Show the coverage of tests.
+integration-tests: # Run the integration-tests.
+	coverage run -m pytest -k "integration_tests"; \
 	coverage combine; \
 	coverage report --precision=2 -m
 
 freeze: # Export the requirements.txt file.
 	poetry export --without-hashes -f requirements.txt --output requirements.txt
 
-freeze-dev: # Export the requirements.txt file.
+freeze-dev: # Export the requirements.dev.txt file.
 	poetry export --without-hashes --dev -f requirements.txt --output requirements.dev.txt

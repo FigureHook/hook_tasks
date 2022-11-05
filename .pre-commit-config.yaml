@@ -10,7 +10,7 @@ repos:
     rev: "v0.971"
     hooks:
       - id: mypy
-        additional_dependencies: ["types-PyYAML", "types-pytz", "types-redis"]
+        additional_dependencies: ["types-PyYAML", "types-pytz", "types-redis", "types-requests"]
 
   - repo: https://github.com/psf/black
     rev: "22.8.0"

@@ -47,7 +47,7 @@ def test_check_checksum(mocker: MockerFixture, source_checksum_factory):
             def get_checksum_by_source(self, source_name: str) -> SourceChecksum | None:
                 return mock_checksum
 
-        announcement_check = check(checksum_repo=MockChecksumRepo())
+        announcement_check = check(checksum_repo=MockChecksumRepo())  # type: ignore
         mocker.patch(
             "hook_tasks.domains.source_checksum.announcement_check_use_case._generate_checksum_value",
             new=mocker.MagicMock(return_value=mock_checksum.value),
@@ -97,5 +97,5 @@ def test_sync_checksum(mocker: MockerFixture, source_checksum_factory):
             attribute="create_checksum",
             new=mocker.MagicMock(return_value=another_mock_dto),
         )
-        announcement_check = check(checksum_repo=MockChecksumRepo())
+        announcement_check = check(checksum_repo=MockChecksumRepo())  # type: ignore
         assert not announcement_check.sync().is_changed()
