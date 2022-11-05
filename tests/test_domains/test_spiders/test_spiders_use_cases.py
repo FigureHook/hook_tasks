@@ -12,7 +12,7 @@ from hook_tasks.domains.spiders.scrapy_spider_use_case import (
 
 def test_get_spiders(mocker: MockerFixture):
     mocker.patch(
-        "hook_tasks.domains.spiders.scrapy_spider_usecase.get_spiders",
+        "hook_tasks.domains.spiders.scrapy_spider_use_case.get_spiders",
         new=mocker.MagicMock(return_value=["123"]),
     )
     for spider_name in get_spiders_from_project(project_name="project"):
@@ -21,7 +21,7 @@ def test_get_spiders(mocker: MockerFixture):
 
 def test_trigger_spider(mocker: MockerFixture):
     mocker.patch(
-        "hook_tasks.domains.spiders.scrapy_spider_usecase.schedule",
+        "hook_tasks.domains.spiders.scrapy_spider_use_case.schedule",
         new=mocker.MagicMock(return_value="123a"),
     )
     assert isinstance(trigger_spider(project_name="project", spider_name="spider"), str)
@@ -30,7 +30,7 @@ def test_trigger_spider(mocker: MockerFixture):
 def test_product_announcement_spider_usecase(mocker: MockerFixture):
     schedule_mock = mocker.MagicMock(return_value="123a")
     mocker.patch(
-        "hook_tasks.domains.spiders.scrapy_spider_usecase.schedule",
+        "hook_tasks.domains.spiders.scrapy_spider_use_case.schedule",
         new=schedule_mock,
     )
 

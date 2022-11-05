@@ -18,7 +18,7 @@ from hook_tasks.domains.sns_post.discord.value_objects.release_embed_cache impor
 
 
 class ReleaseEmebedMeomoryCacheRepository(ReleaseEmbedCacheRepositoryInterface):
-    cache: Dict[str, Sequence[EmbedDict]]
+    cache: Dict[str, Sequence["EmbedDict"]]
 
     def __init__(self, *args, **kwargs) -> None:
         self.cache = {}

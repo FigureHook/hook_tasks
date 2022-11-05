@@ -49,13 +49,13 @@ def test_check_checksum(mocker: MockerFixture, source_checksum_factory):
 
         announcement_check = check(checksum_repo=MockChecksumRepo())
         mocker.patch(
-            "hook_tasks.domains.source_checksum.announcement_check_usecase._generate_checksum_value",
+            "hook_tasks.domains.source_checksum.announcement_check_use_case._generate_checksum_value",
             new=mocker.MagicMock(return_value=mock_checksum.value),
         )
         assert not announcement_check.is_changed()
 
         mocker.patch(
-            "hook_tasks.domains.source_checksum.announcement_check_usecase._generate_checksum_value",
+            "hook_tasks.domains.source_checksum.announcement_check_use_case._generate_checksum_value",
             new=mocker.MagicMock(return_value="321"),
         )
         assert announcement_check.is_changed()
