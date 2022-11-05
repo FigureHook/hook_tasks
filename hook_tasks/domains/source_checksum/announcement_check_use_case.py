@@ -98,7 +98,7 @@ class NativeProductAnnouncementCheck(SiteSourceChceksum):
 
     @staticmethod
     def extract_feature() -> bytes:
-        url = f"https://www.native-web.jp/news/feed/"
+        url = "https://www.native-web.jp/news/feed/"
         response = rq.head(url)
         etag = response.headers.get("ETag")
         response.raise_for_status()
@@ -111,7 +111,7 @@ class AmakuniProductAnnouncementCheck(SiteSourceChceksum):
 
     @staticmethod
     def extract_feature() -> bytes:
-        url = f"http://amakuni.info/index.php"
+        url = "http://amakuni.info/index.php"
         response = rq.get(url)
         response.raise_for_status()
         return response.content

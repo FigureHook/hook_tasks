@@ -1,7 +1,4 @@
 import os
-
-os.environ["ENV"] = "test"
-
 import shutil
 from urllib.parse import urlparse
 from urllib.request import url2pathname
@@ -10,8 +7,13 @@ import pytest
 from pydantic_factories import ModelFactory
 from pydantic_factories.plugins.pytest_plugin import register_fixture
 
-from hook_tasks.app import app
-from hook_tasks.domains.sns_post.common.value_objects.release_feed import ReleaseFeed
+os.environ["ENV"] = "test"
+
+
+from hook_tasks.app import app  # noqa: E402
+from hook_tasks.domains.sns_post.common.value_objects.release_feed import (  # noqa: E402
+    ReleaseFeed,
+)
 
 
 @pytest.fixture
