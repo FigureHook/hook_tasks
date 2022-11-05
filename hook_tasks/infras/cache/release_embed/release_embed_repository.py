@@ -39,10 +39,10 @@ class ReleaseEmebedMeomoryCacheRepository(ReleaseEmbedCacheRepositoryInterface):
         self, cache_key: ReleaseEmbedCacheKeyCriteria, embeds: Sequence[Embed], ttl: int
     ) -> ReleaseEmbedCache:
         embed_dicts = [embed.to_dict() for embed in embeds]
-        cache_value = self.cache.setdefault(cache_key.to_key_str(), embed_dicts)
+        self.cache.setdefault(cache_key.to_key_str(), embed_dicts)
         return ReleaseEmbedCache(
             key=cache_key,
-            value=[Embed.from_dict(embed_dict) for embed_dict in cache_value],
+            value=embeds,
         )
 
 
