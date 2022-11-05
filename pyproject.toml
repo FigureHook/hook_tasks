@@ -26,6 +26,8 @@ pytest-mock = "^3.6.1"
 Faker = "^9.8.0"
 coverage = { extras = ["toml"], version = "^6.5.0" }
 celery = { extras = ["pytest"], version = "^5.2.7" }
+mypy = "^0.982"
+flake8 = "^5.0.4"
 
 [tool.poetry.scripts]
 hooktasks = "hook_tasks.cli:main"
