@@ -1,19 +1,13 @@
-FROM python:3.9-buster
-
-ENV POETRY_VERSION=1.1.8
-
-RUN pip install "poetry==$POETRY_VERSION"
+FROM python:3.10-buster
 
 WORKDIR /workspace
 
-COPY poetry.lock .
-COPY pyproject.toml .
+COPY requirements.txt .
 COPY hook_tasks hook_tasks/
 COPY docker-entrypoint.sh .
 
-RUN poetry config virtualenvs.create false && \
-    poetry install --no-interaction --no-ansi && \
+RUN pip install -r requirements.txt && \
     chmod +x docker-entrypoint.sh
 
 ENTRYPOINT [ "./docker-entrypoint.sh" ]
-CMD [ "start" ]
+CMD [ "worker" ]
