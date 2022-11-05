@@ -2,10 +2,12 @@ from typing import Any, Dict, Mapping, Sequence
 
 from celery.utils.log import get_task_logger
 from discord import Embed, HTTPException, NotFound, SyncWebhook
-
 from hook_tasks.api_clients import hook_api_client, plurk_api
 from hook_tasks.app import app
 from hook_tasks.domains.sns_post.discord.use_cases import CreateEmbedUseCase
+from hook_tasks.domains.sns_post.plurk.use_cases.get_plurk_api_error_usecase import (
+    GetPlurkApiErrorUserCase,
+)
 from hook_tasks.infras.persistance.discord_webhook.discord_webhook_repository import (
     DiscordWebhookRepository,
 )
@@ -41,14 +43,7 @@ def post_plurk(self, content: str, config: Dict[str, Any]):
     options = {content: content, **config}
     resp = plurk_api.callAPI("/APP/Timeline/plurkAdd", options=options)
     if not resp:
-        """
-        HTTP 400 BAD REQUEST with {"error_text": "Invalid data"} as body
-        HTTP 400 BAD REQUEST with {"error_text": "Content is empty"} as body
-        HTTP 400 BAD REQUEST with {"error_text": "no-permission-to-comment"} as body
-        HTTP 400 BAD REQUEST with {"error_text": "anti-flood-same-content"} as body
-        HTTP 400 BAD REQUEST with {"error_text": "anti-flood-spam-domain"} as body
-        HTTP 400 BAD REQUEST with {"error_text": "anti-flood-too-many-new"} as body
-        """
-        self.retry(countdown=30, max_retries=3)
+        exc = GetPlurkApiErrorUserCase.get_add_plurk_error(error_body=plurk_api.error())
+        self.retry(countdown=30, max_retries=3, exc=exc)
 
     return plurk_api.error
