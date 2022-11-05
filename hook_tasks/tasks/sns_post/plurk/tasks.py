@@ -33,4 +33,4 @@ def post_new_releases_to_plurk(ticket_id: str):
         post_plurk.s(plurk_model.content, plurk_model.config.dict()).apply_async(
             count_down=next_countdown
         )
-        next_countdown = random.randint(10, 30)
+        next_countdown += random.randint(10, 30)

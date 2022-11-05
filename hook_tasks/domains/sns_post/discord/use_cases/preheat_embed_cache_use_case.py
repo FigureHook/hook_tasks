@@ -17,6 +17,7 @@ from hook_tasks.domains.sns_post.discord.value_objects.release_embed_cache impor
 
 from .create_embed_use_case import CreateEmbedUseCase
 from .localize_embed_use_case import localize_release_embed_with_locale
+from .make_embed_tracable_use_caes import MakeEmbedTrackableUseCase
 
 
 class PreheatEmbedCacheUseCase:
@@ -37,6 +38,14 @@ class PreheatEmbedCacheUseCase:
     def process_new_release_by_release_ticket_id(
         self, ticket_id: str, ttl: int = 30 * 60
     ) -> str | None:
+        """
+        :param ticket_id: The id of release_ticket.
+        :type ticket_id: str
+        :param ttl: cache ttl, defaults to 30*60
+        :type ttl: int, optional
+        :return: Return `ticket_id` when success. Return `None` if there is no feeds to process.
+        :rtype: str | None
+        """
         release_feeds = self.ticket_repo.get_release_feeds_by_ticket_id(ticket_id)
         if not len(release_feeds):
             return None
@@ -48,6 +57,9 @@ class PreheatEmbedCacheUseCase:
             for feed in release_feeds:
                 release_embed = CreateEmbedUseCase.create_new_release_embed(
                     release_feed=feed
+                )
+                release_embed = MakeEmbedTrackableUseCase.could_be_tracked_by_ticket_id(
+                    embed=release_embed, ticket_id=ticket_id
                 )
                 localized_embed = localize_release_embed_with_locale(
                     release_embed=release_embed, locale=lang
