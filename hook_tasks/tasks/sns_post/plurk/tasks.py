@@ -11,7 +11,11 @@ from hook_tasks.domains.sns_post.common.use_cases.create_release_ticket_use_case
 from hook_tasks.domains.sns_post.plurk.create_plurk_usecase import (
     create_new_release_plurk_by_release_feed,
 )
-from hook_tasks.domains.sns_post.plurk.errors import AntiFloodError
+from hook_tasks.domains.sns_post.plurk.errors import (
+    AntiFloodError,
+    SameContent,
+    TooManyNew,
+)
 from hook_tasks.domains.sns_post.plurk.use_cases.get_plurk_api_error_usecase import (
     GetPlurkApiErrorUserCase,
 )
@@ -22,13 +26,21 @@ from hook_tasks.infras.persistance.release_ticket.release_ticket_repository impo
 logger = get_task_logger(__name__)
 
 
-@app.task(bind=True, throws=(AntiFloodError,))
+@app.task(
+    autoretry_for=(
+        SameContent,
+        TooManyNew,
+    ),
+    retry_backoff=300,
+    max_retries=3,
+    throws=(AntiFloodError,),
+)
 def post_plurk(self, content: str, config: Dict[str, Any]):
     options = {content: content, **config}
     resp = plurk_api.callAPI("/APP/Timeline/plurkAdd", options=options)
     if not resp:
         exc = GetPlurkApiErrorUserCase.get_add_plurk_error(error_body=plurk_api.error())
-        self.retry(countdown=30, max_retries=3, exc=exc)
+        raise exc
 
     return plurk_api.error
 

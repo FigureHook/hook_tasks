@@ -94,6 +94,14 @@ def push_new_release_to_discord_webhook():
                     webhook_id=webhook.id,
                     webhook_token=webhook.token,
                     embed_dicts=embeds_batch,
+                ).set(
+                    kwargsrepr=repr(
+                        {
+                            "webhook_id": webhook.id,
+                            "webhook_token": "***token***",
+                            "embed_dicts": embeds_batch,
+                        }
+                    )
                 )
             )
 
