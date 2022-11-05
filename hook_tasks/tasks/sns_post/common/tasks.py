@@ -2,6 +2,7 @@ from typing import Any, Dict, Mapping, Sequence
 
 from celery.utils.log import get_task_logger
 from discord import Embed, HTTPException, NotFound, SyncWebhook
+
 from hook_tasks.api_clients import hook_api_client, plurk_api
 from hook_tasks.app import app
 from hook_tasks.domains.sns_post.discord.use_cases import CreateEmbedUseCase
