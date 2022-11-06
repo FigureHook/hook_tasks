@@ -1,6 +1,7 @@
 import random
 from typing import Any, Dict
 
+from celery.exceptions import Ignore
 from celery.utils.log import get_task_logger
 
 from hook_tasks.api_clients import hook_api_client, plurk_api
@@ -52,6 +53,9 @@ def post_new_releases_to_plurk():
 
     ticket_id = ticket_use_case.create_release_ticket_for_purpose("plurk_new_release")
     release_feeds = ticket_repo.get_release_feeds_by_ticket_id(ticket_id=ticket_id)
+
+    if not len(release_feeds):
+        raise Ignore
 
     next_countdown = 0
     for feed in release_feeds:

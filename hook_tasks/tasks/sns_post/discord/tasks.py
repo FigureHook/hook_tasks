@@ -1,6 +1,7 @@
 from typing import Any, Iterator, Mapping, Sequence
 
 from celery import group
+from celery.exceptions import Ignore
 from celery.utils.functional import chunks
 from celery.utils.log import get_task_logger
 from discord import Embed, HTTPException, NotFound, SyncWebhook
@@ -53,9 +54,6 @@ def send_discord_embeds_webhook(
         )
 
 
-logger = get_task_logger(__name__)
-
-
 @app.task
 def push_new_release_to_discord_webhook():
     cache = ReleaseEmebedMeomoryCacheRepository()
@@ -73,7 +71,7 @@ def push_new_release_to_discord_webhook():
     )
 
     if not ticket_id:
-        return None
+        raise Ignore
 
     # TODO: When the webhooks grow up, this work should be seperated.
     webhooks = webhook_repo.get_all_webhooks()
@@ -105,5 +103,7 @@ def push_new_release_to_discord_webhook():
                 )
             )
 
-    if len(webhook_tasks):
-        group(webhook_tasks).apply_async()
+    if not len(webhook_tasks):
+        raise Ignore
+
+    group(webhook_tasks).apply_async()
