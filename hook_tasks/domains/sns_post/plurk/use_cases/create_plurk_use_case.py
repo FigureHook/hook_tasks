@@ -5,9 +5,9 @@ from babel.dates import format_date
 
 from hook_tasks.domains.sns_post.common.value_objects.release_feed import ReleaseFeed
 
-from .format_helper import PlurkFormatHelper
-from .value_objects.plurk_config import PlurkConfig
-from .value_objects.plurk_model import PlurkModel
+from ..format_helper import PlurkFormatHelper
+from ..value_objects.plurk_config import PlurkConfig
+from ..value_objects.plurk_model import PlurkModel
 
 
 def create_new_release_plurk_by_release_feed(release_feed: ReleaseFeed) -> PlurkModel:

@@ -1,4 +1,4 @@
-from hook_tasks.domains.sns_post.plurk.create_plurk_usecase import (
+from hook_tasks.domains.sns_post.plurk.use_cases.create_plurk_use_case import (
     create_new_release_plurk_by_release_feed,
 )
 from hook_tasks.domains.sns_post.plurk.value_objects.plurk_model import PlurkModel

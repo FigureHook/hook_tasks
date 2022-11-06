@@ -7,7 +7,7 @@ from hook_tasks.domains.sns_post.plurk.errors import (
     SpamDomain,
     TooManyNew,
 )
-from hook_tasks.domains.sns_post.plurk.use_cases.get_plurk_api_error_usecase import (
+from hook_tasks.domains.sns_post.plurk.use_cases.get_plurk_api_error_use_case import (
     GetPlurkApiErrorUserCase,
 )
 
